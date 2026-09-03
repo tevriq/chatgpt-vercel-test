@@ -1,0 +1,59 @@
+name: P14 iOS Simulator Build
+
+on:
+  push:
+    branches:
+      - preview/p14-r1-r4
+    paths:
+      - 'ios/P14Design/**'
+      - '.github/workflows/p14-ios-simulator.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate --spec ios/P14Design/project.yml
+
+      - name: Build iOS Simulator app
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project ios/P14Design/P14Design.xcodeproj \
+            -scheme P14Design \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tee xcodebuild.log
+
+      - name: Package Appetize artifact
+        run: |
+          APP_PATH="build/Build/Products/Debug-iphonesimulator/P14Design.app"
+          test -d "$APP_PATH"
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" P14Design-simulator.zip
+          ls -lh P14Design-simulator.zip
+
+      - name: Upload simulator build
+        uses: actions/upload-artifact@v4
+        with:
+          name: P14Design-simulator
+          path: P14Design-simulator.zip
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: P14Design-xcodebuild-log
+          path: xcodebuild.log
+          if-no-files-found: ignore
+          retention-days: 7
