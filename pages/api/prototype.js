@@ -3,7 +3,8 @@ import path from 'path';
 
 export default function handler(req,res){
   const file=path.join(process.cwd(),'index.html');
-  const html=fs.readFileSync(file,'utf8');
+  const bars='<i></i>'.repeat(24);
+  const html=fs.readFileSync(file,'utf8').replace("${'<i></i>'.repeat(24)}", bars);
   res.setHeader('Content-Type','text/html; charset=utf-8');
   res.setHeader('Cache-Control','no-store');
   res.status(200).send(html);
