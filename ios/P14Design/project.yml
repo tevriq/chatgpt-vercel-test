@@ -1,0 +1,25 @@
+name: P14Design
+options:
+  bundleIdPrefix: wang.tsu
+targets:
+  P14Design:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - P14DesignApp.swift
+      - ContentView.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: wang.tsu.p14design
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: P14 Design
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGNING_ALLOWED: NO
+schemes:
+  P14Design:
+    build:
+      targets:
+        P14Design: all
+    run:
+      config: Debug
