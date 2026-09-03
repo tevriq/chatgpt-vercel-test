@@ -49,6 +49,33 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+      - name: Upload to Appetize when token configured
+        id: appetize
+        env:
+          APPETIZE_API_TOKEN: ${{ secrets.APPETIZE_API_TOKEN }}
+        run: |
+          if [ -z "$APPETIZE_API_TOKEN" ]; then
+            echo "Appetize API token not configured; native artifact was built successfully, upload skipped." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          RESPONSE=$(curl --fail-with-body -sS -X POST https://api.appetize.io/v1/apps \
+            -H "X-API-KEY: $APPETIZE_API_TOKEN" \
+            -F "file=@P14Design-simulator.zip" \
+            -F "platform=ios" \
+            -F "note=P14 R1@r4 Design Build ${GITHUB_SHA}" \
+            -F "appPermissions.run=public")
+          printf '%s' "$RESPONSE" > appetize-response.json
+          PUBLIC_KEY=$(python3 -c 'import json; print(json.load(open("appetize-response.json")).get("publicKey", ""))')
+          if [ -z "$PUBLIC_KEY" ]; then
+            echo "Appetize upload returned no publicKey"
+            cat appetize-response.json
+            exit 1
+          fi
+          echo "public_key=$PUBLIC_KEY" >> "$GITHUB_OUTPUT"
+          echo "### Appetize P14 Design Build" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://appetize.io/app/$PUBLIC_KEY" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Upload build log on failure
         if: failure()
         uses: actions/upload-artifact@v4
