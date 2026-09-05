@@ -1,125 +1,123 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>P1 0.8.1 UI Preview</title>
+<title>软件中心 - 双 WAN 智能分流 · 0.8.1 Preview</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,"Microsoft YaHei",sans-serif;background:#1b2328;color:#eef5f7}button,input,select{font:inherit}.app{min-height:100vh;background:linear-gradient(#1c272d,#172026)}.top{height:86px;background:linear-gradient(180deg,#293941,#202d33);border-bottom:1px solid #4f6975;display:flex;align-items:center;padding:0 24px;box-shadow:0 2px 12px rgba(0,0,0,.35)}.brand{font-size:26px;font-weight:700;letter-spacing:.5px}.brand small{font-size:12px;font-weight:400;color:#aabcc4;margin-left:10px}.preview-controls{margin-left:auto;display:flex;gap:8px;align-items:center}.preview-controls span{font-size:12px;color:#b9c9cf}.pbtn{border:1px solid #668692;background:#34474f;color:#eaf4f6;border-radius:4px;padding:7px 10px;cursor:pointer}.pbtn.on{background:#1f8796}.shell{display:grid;grid-template-columns:220px minmax(0,1fr);min-height:calc(100vh - 86px)}.side{background:#202b30;border-right:1px solid #40535c;padding:16px 0}.side .section{padding:9px 20px;color:#8da3ac;font-size:12px;text-transform:uppercase}.side a{display:block;padding:11px 20px;color:#d8e3e7;text-decoration:none;border-left:4px solid transparent}.side a:hover{background:#29383f}.side a.active{background:#2b3c43;border-left-color:#1fa4b3;color:#fff;font-weight:bold}.content-wrap{padding:24px 28px 50px}.host-note{max-width:760px;margin:0 auto 10px;color:#8fa5ae;font-size:12px}.panel{width:760px;max-width:100%;margin:0 auto;background:#2b383e;border:1px solid #668692;box-shadow:0 10px 32px rgba(0,0,0,.28)}.panel-head{padding:17px 18px 12px;background:#303f45;border-bottom:1px solid #607b87}.panel-head h1{font-size:20px;margin:0 0 5px}.panel-head p{margin:0;color:#b9c8ce;font-size:12px}.tabs{display:flex;flex-wrap:wrap;padding:12px 14px 0;background:#26343a;border-bottom:1px solid #668692}.tab{padding:9px 16px;border:1px solid #668692;border-bottom:0;background:#3b474b;margin-right:4px;cursor:pointer;color:#fff}.tab.active{background:#1f8796;font-weight:bold}.page{display:none;padding:14px}.page.active{display:block}.banner{border-left:4px solid #f0b83f;background:rgba(240,184,63,.12);padding:11px 12px;margin-bottom:12px;display:none}.banner strong{display:block;color:#ffd166;margin-bottom:4px}.banner .actions{margin-top:8px}.stale{display:none;border-left:4px solid #f0b83f;background:rgba(0,0,0,.16);padding:8px 10px;margin-bottom:10px;color:#ffd166;font-size:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{background:rgba(0,0,0,.16);border:1px solid #668692;border-radius:5px;padding:12px}.card .label{font-size:12px;color:#b8c8ce}.card .value{font-size:17px;margin-top:6px}.good{color:#62d26f}.warn{color:#ffd166}.bad{color:#ff7777}.blue{color:#71c7ff}.small{font-size:12px;color:#b8c8ce;line-height:1.55}.toolbar{display:flex;justify-content:flex-end;gap:8px;margin:11px 0}.btn{border:1px solid #668692;background:#1f8796;color:#fff;border-radius:4px;padding:7px 13px;cursor:pointer}.btn.secondary{background:#485a61}.btn.danger{background:#9b3c3c}.btn:disabled{opacity:.45;cursor:not-allowed}.meta{border:1px solid #668692;background:rgba(0,0,0,.12);padding:11px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:10px}.meta h2{font-size:16px;margin:0 0 6px}.meta-lines{font-size:12px;line-height:1.7;color:#c8d6dc}.tag{display:inline-block;padding:2px 7px;border-radius:10px;border:1px solid #668692;font-size:11px;margin-left:6px}.tag.good{border-color:#4e9d58}.tag.warn{border-color:#c49a3a}.rule-table,.device-table{width:100%;border-collapse:collapse}.rule-table th,.rule-table td,.device-table th,.device-table td{border:1px solid #668692;padding:7px;text-align:left;font-size:13px}.rule-table th,.device-table th{background:#344348;color:#dce7ea}.parent td{background:rgba(0,0,0,.12);font-weight:bold}.child td:first-child{padding-left:22px}.sel,.text{background:#25353b;color:#fff;border:1px solid #668692;border-radius:3px;padding:6px 7px}.sel{width:100%}.savebar{margin-top:10px;border:1px solid #668692;background:rgba(0,0,0,.14);padding:9px;display:flex;align-items:center;justify-content:space-between}.advanced-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}.adv{padding:7px 9px;border:1px solid #668692;background:#344348;cursor:pointer}.adv.active{background:#1f8796;font-weight:bold}.adv-page{display:none}.adv-page.active{display:block}.section-head{background:#344348;border:1px solid #668692;padding:8px 10px;font-weight:bold;margin:8px 0}.device-head{display:flex;justify-content:space-between;align-items:flex-start;margin:4px 0 10px}.device-head h3{margin:0 0 5px}.form{display:none;border:1px solid #668692;background:rgba(0,0,0,.18);padding:11px;margin:9px 0}.form.show{display:block}.form-grid{display:grid;grid-template-columns:1.2fr 1fr 1.4fr;gap:8px}.form label{display:block;font-size:11px;color:#b8c8ce;margin-bottom:4px}.form .text,.form .sel{width:100%}.form-foot{display:flex;justify-content:flex-end;gap:7px;margin-top:9px}.link{color:#84d6df;cursor:pointer;text-decoration:underline}.muted{color:#93a6ad}.note{font-size:12px;color:#c5d2d7;line-height:1.65}.status-row{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid #668692;background:rgba(0,0,0,.12);padding:9px 10px;margin:7px 0}.placeholder{border:1px dashed #668692;padding:18px;text-align:center;color:#aebec4}.toast{position:fixed;right:20px;bottom:20px;max-width:340px;background:#26383e;border:1px solid #668692;border-left:4px solid #62d26f;padding:11px 13px;box-shadow:0 8px 30px rgba(0,0,0,.35);display:none;z-index:10}.toast.show{display:block}.preview-label{position:fixed;left:12px;bottom:10px;color:#71868e;font-size:11px}@media(max-width:900px){.shell{grid-template-columns:1fr}.side{display:none}.content-wrap{padding:12px}.panel{width:100%}.preview-controls{gap:4px;flex-wrap:wrap;justify-content:flex-end}.preview-controls span{display:none}}@media(max-width:600px){.grid{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.tabs .tab{flex:1 1 30%;text-align:center;padding:8px 4px}.meta{grid-template-columns:1fr}.rule-table{font-size:12px}}
+*{box-sizing:border-box}html,body{margin:0;background:#1b252a;color:#fff;font-family:Arial,"Microsoft YaHei",sans-serif;font-size:13px}button,input,select,textarea{font:inherit}.router-top{height:78px;background:linear-gradient(#303f46,#222e34);border-bottom:1px solid #506872}.router-brand{width:984px;margin:0 auto;padding:20px 0;font-size:24px;font-weight:bold}.router-brand small{font-size:12px;color:#b6c5cb;font-weight:normal;margin-left:10px}.layout{width:984px;margin:0 auto;display:grid;grid-template-columns:202px 1fr;gap:17px;padding-top:18px}.host-menu{background:#222e34;border:1px solid #4e6772;min-height:730px}.host-title{padding:10px 14px;color:#91a9b2;font-size:11px;border-bottom:1px solid #40545d}.host-item{padding:10px 14px;color:#d3e0e4;border-bottom:1px solid rgba(255,255,255,.04)}.host-item.on{background:#2d424a;border-left:4px solid #1f8796;padding-left:10px;color:#fff;font-weight:bold}.FormTitle{width:760px;border-collapse:collapse;border:1px solid #6b8fa3;background:#4D595D}.FormTitle>tbody>tr>td{padding:5px 14px 18px}.formfonttitle{font-size:18px;margin-top:8px}.splitLine{height:1px;background:#718995}.FormTable{width:100%;border-collapse:collapse;margin:10px 0;color:#fff}.FormTable th,.FormTable td{border:1px solid #6b8fa3;padding:8px}.FormTable th{width:31%;background:#344348;text-align:left;font-weight:normal}.FormTable thead td{background:#344348;font-weight:bold}.dws-tabs{display:flex;flex-wrap:wrap;margin:14px 0 10px;border-bottom:1px solid #6b8fa3}.dws-tab{padding:9px 16px;cursor:pointer;background:#3b474b;border:1px solid #6b8fa3;border-bottom:0;margin-right:4px;color:#fff}.dws-tab.on{background:#1f8796;font-weight:bold}.dws-panel{display:none}.dws-panel.on{display:block}.dws-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:10px 0}.dws-card{background:rgba(0,0,0,.18);border:1px solid #6b8fa3;border-radius:6px;padding:12px}.dws-card-title{font-size:12px;color:#c8d6dc}.dws-card-value{font-size:18px;color:#fff;margin-top:6px;word-break:break-all}.dws-good{color:#62d26f}.dws-bad{color:#ff6b6b}.dws-warn{color:#ffd166}.dws-btn{border:1px solid #6b8fa3;background:#1f8796;color:#fff;border-radius:4px;padding:7px 14px;margin:4px;cursor:pointer}.dws-btn.secondary{background:#47575d}.dws-btn.danger{background:#9b3c3c}.dws-btn:disabled{opacity:.5;cursor:default}.dws-toolbar{margin:8px 0;text-align:right}.dws-note{line-height:1.7;color:#d8e4e8}.dws-small{font-size:12px;color:#b8c8ce}.dws-refresh-time{float:left;margin:12px 0 0 4px;color:#b8c8ce;font-size:12px}.dws-message{padding:9px;margin:8px 0;border-left:4px solid #1f8796;background:rgba(0,0,0,.2);display:none}.dws-switch{font-size:14px}.dws-switch input{margin-left:14px}.dws-mode-options{display:inline-flex;vertical-align:middle;margin:4px 8px 4px 0}.dws-mode-options label{cursor:pointer}.dws-mode-options input{position:absolute;opacity:0}.dws-mode-options span{display:block;padding:8px 12px;border:1px solid #6b8fa3;background:#3b474b;color:#fff;margin-left:-1px}.dws-mode-options label:first-child span{border-radius:4px 0 0 4px;margin-left:0}.dws-mode-options label:last-child span{border-radius:0 4px 4px 0}.dws-mode-options input:checked+span{background:#1f8796;font-weight:bold}.dws-rule-table{width:100%;border-collapse:collapse}.dws-rule-table th,.dws-rule-table td{border:1px solid #6b8fa3;padding:6px;text-align:left;word-break:break-word}.dws-muted-row{text-align:center;color:#b8c8ce;padding:16px!important}.dws-target-HOME{color:#62d26f}.dws-target-MOBILE{color:#71c7ff}.dws-text{box-sizing:border-box;width:100%;background:#28363b;color:#fff;border:1px solid #6b8fa3;border-radius:3px;padding:9px}.dws-select{width:68%;max-width:520px;background:#28363b;color:#fff;border:1px solid #6b8fa3;border-radius:3px;padding:7px}.dws-path{font:12px/1.5 Menlo,Monaco,Consolas,monospace;word-break:break-all}.dws-wan-detail{display:block;font-size:12px;color:#b8c8ce;margin-top:4px;line-height:1.5}.dws-service-meta{border:1px solid #6b8fa3;background:rgba(0,0,0,.12);padding:10px;line-height:1.7;margin-bottom:10px}.dws-service-meta .dws-btn{float:right;margin-top:-2px}.dws-service-select{box-sizing:border-box;width:100%;min-width:128px;background:#28363b;color:#fff;border:1px solid #6b8fa3;border-radius:3px;padding:6px}.dws-service-parent td{background:rgba(0,0,0,.13);font-weight:bold}.dws-service-child .dws-service-name{padding-left:19px;font-weight:normal}.dws-service-child .dws-service-name:before{content:'↳ ';color:#b8c8ce}.dws-service-name{font-weight:bold}.dws-service-desc{display:block;font-size:11px;color:#b8c8ce;margin-top:2px;font-weight:normal}.dws-savebar{margin-top:10px;border:1px solid #6b8fa3;background:rgba(0,0,0,.16);padding:8px 10px;min-height:38px;box-sizing:border-box}.dws-savebar .dws-actions{float:right}.dws-dirty{display:inline-block;margin-top:8px}.dws-advanced-tabs{display:flex;flex-wrap:wrap;margin:8px 0}.dws-advanced-tab{padding:7px 10px;border:1px solid #6b8fa3;background:#344348;cursor:pointer;margin:0 3px 3px 0}.dws-advanced-tab.on{background:#1f8796;font-weight:bold}.dws-advanced-panel{display:none}.dws-advanced-panel.on{display:block}.dws-section-head{margin:12px 0 0;padding:8px 10px;border:1px solid #6b8fa3;background:#344348;font-weight:bold}#yaml_editor{width:98%;height:260px;background:#101719;color:#e6f0f2;border:1px solid #6b8fa3;font:13px/1.55 Menlo,Monaco,Consolas,monospace;padding:10px}.preview-controls{position:fixed;right:14px;top:12px;z-index:20;background:#142027;border:1px solid #6b8fa3;padding:7px;border-radius:5px;box-shadow:0 5px 20px rgba(0,0,0,.35)}.preview-controls span{color:#b8c8ce;font-size:11px;margin-right:5px}.preview-controls button{border:1px solid #6b8fa3;background:#344348;color:#fff;padding:5px 8px;margin:0 2px;border-radius:3px;cursor:pointer}.preview-controls button.on{background:#1f8796}.r17-banner{display:none;border-left:4px solid #ffd166;background:rgba(0,0,0,.2);padding:9px 10px;margin:8px 0;line-height:1.6}.r17-banner strong{color:#ffd166}.r17-stale{display:none;border-left:4px solid #ffd166;background:rgba(0,0,0,.18);padding:8px 10px;margin:8px 0;color:#ffd166}.version-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:12px;color:#d5e2e6;margin-top:5px}.device-form{border:1px solid #6b8fa3;background:rgba(0,0,0,.14);padding:10px;margin-bottom:10px}.device-form-grid{display:grid;grid-template-columns:1.05fr .8fr 1.2fr auto;gap:7px;align-items:end}.device-form label{display:block;color:#b8c8ce;font-size:11px;margin-bottom:4px}.device-form input,.device-form select{width:100%;background:#28363b;color:#fff;border:1px solid #6b8fa3;border-radius:3px;padding:7px}.device-actions{white-space:nowrap}.device-actions .dws-btn{padding:5px 8px}.disabled-by-storage{opacity:.5;pointer-events:none}@media(max-width:1020px){.router-top{display:none}.layout{width:auto;display:block;padding:10px}.host-menu{display:none}.FormTitle{width:100%}.preview-controls{position:sticky;top:0;margin-bottom:8px}.dws-grid{grid-template-columns:1fr}.device-form-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-<div class="app">
-  <div class="top">
-    <div class="brand">ASUSWRT-Merlin <small>RT-AC88U · 386.14.2</small></div>
-    <div class="preview-controls">
-      <span>预览状态</span>
-      <button class="pbtn on" data-mode="normal">正常</button>
-      <button class="pbtn" data-mode="storage">存储故障</button>
-      <button class="pbtn" data-mode="stale">刷新失败</button>
-    </div>
+<div class="preview-controls"><span>仅用于预览 0.8.1 新状态：</span><button class="on" data-mode="normal">正常</button><button data-mode="storage">外置存储故障</button><button data-mode="stale">刷新失败</button></div>
+<div class="router-top"><div class="router-brand">ASUSWRT-Merlin <small>RT-AC88U · 386.14.2</small></div></div>
+<div class="layout">
+  <aside class="host-menu"><div class="host-title">ASUSWRT-Merlin 宿主菜单</div><div class="host-item">网络地图</div><div class="host-item">无线网络</div><div class="host-item">内部网络</div><div class="host-item">外部网络</div><div class="host-item">VPN</div><div class="host-item">防火墙</div><div class="host-item">系统管理</div><div class="host-item on">软件中心</div></aside>
+  <main>
+<table class="FormTitle"><tr><td>
+<div>&nbsp;</div><div class="formfonttitle">软件中心 - 双 WAN 智能分流<span id="lbl_version"> v0.8.1</span></div>
+<div style="margin:10px 0" class="splitLine"></div>
+<div class="dws-note">普通使用只需在“服务分流”选择常用服务出口。HOME = 家庭 WAN，MOBILE = 手机 USB；高级规则和排障工具统一放在“高级”。</div>
+<div id="message" class="dws-message"></div>
+<div id="storage_banner" class="r17-banner"><strong>正在使用 JFFS 应急副本</strong><br/>外置存储不可用。P1 继续按上次可用规则运行；规则、服务数据和配置更新暂时不可用。</div>
+<div id="stale_banner" class="r17-stale">刷新失败 · 当前仍显示 16:37:12 的上次成功数据。</div>
+
+<div class="dws-tabs"><div class="dws-tab on" data-panel="panel_status">状态</div><div class="dws-tab" data-panel="panel_services">服务分流</div><div class="dws-tab" data-panel="panel_advanced">高级</div><div class="dws-tab" data-panel="panel_adb">ADB 工具箱</div><div class="dws-tab" data-panel="panel_help">说明</div></div>
+
+<div id="panel_status" class="dws-panel on">
+  <div class="dws-card"><div class="dws-card-title">MOBILE 自愈状态</div><div id="st_auto" class="dws-card-value"><span class="dws-good">已开启</span><br/><span class="dws-small">健康：healthy · 连续失败：0 · 状态：normal<br/>冷却剩余：0 秒 · 最近：- · 结果：-</span></div><button class="dws-btn">受控恢复 MOBILE 蜂窝</button></div>
+  <table class="FormTable"><thead><tr><td colspan="2">运行控制</td></tr></thead>
+    <tr><th>插件开关</th><td class="dws-switch"><label><input type="radio" name="dws_enable" checked />启用</label><label><input type="radio" name="dws_enable" />停用</label><button class="dws-btn">应用开关</button></td></tr>
+    <tr><th>公网出口模式</th><td><span class="dws-mode-options"><label><input type="radio" name="mode" checked /><span>智能分流</span></label><label><input type="radio" name="mode" /><span>全部手机 USB</span></label><label><input type="radio" name="mode" /><span>全部家庭 WAN</span></label></span><button class="dws-btn">应用模式</button><div class="dws-small">这是临时全局覆盖；日常请使用“服务分流”。局域网与 Tailscale 始终绕过。</div></td></tr>
+    <tr><th>MOBILE 蜂窝自动自愈</th><td><label><input type="checkbox" checked />启用</label><button class="dws-btn">保存</button></td></tr>
+  </table>
+  <div class="dws-grid">
+    <div class="dws-card"><div class="dws-card-title">插件状态</div><div class="dws-card-value"><span class="dws-good">已启用</span></div></div>
+    <div class="dws-card"><div class="dws-card-title">运行时</div><div class="dws-card-value"><span class="dws-good">规则、策略路径与隔离 DNS 正常</span></div></div>
+    <div class="dws-card"><div class="dws-card-title">家庭 WAN</div><div class="dws-card-value"><span class="dws-good">可用</span><br/><span class="dws-small">vlan2 · 192.168.50.1</span><span class="dws-wan-detail">接口、地址、网关与策略默认路由已就绪</span></div></div>
+    <div class="dws-card"><div class="dws-card-title">手机 USB</div><div class="dws-card-value"><span class="dws-good">可用</span><br/><span class="dws-small">usb0 · 192.168.42.2</span><span class="dws-wan-detail">接口、地址、网关与策略默认路由已就绪</span></div></div>
+    <div class="dws-card"><div class="dws-card-title">当前公网模式</div><div class="dws-card-value">智能分流</div></div>
+    <div class="dws-card"><div class="dws-card-title">固件双 WAN 模式</div><div class="dws-card-value">lb / wan usb</div></div>
+    <div class="dws-card"><div class="dws-card-title">已编译规则</div><div class="dws-card-value">4575 条规则（自定义 2）· 18 个地址集</div></div>
+    <div class="dws-card"><div class="dws-card-title">中国基础规则</div><div id="china_status" class="dws-card-value">8742 条中国 IP · 21234 条域名<br/><span class="dws-small">2026-09-04</span></div></div>
   </div>
-  <div class="shell">
-    <aside class="side">
-      <div class="section">一般设置</div>
-      <a>网络地图</a><a>AiProtection</a><a>自适应 QoS</a><a>流量分析</a><a>USB 应用</a><a>AiCloud 2.0</a>
-      <div class="section">高级设置</div>
-      <a>无线网络</a><a>内部网络</a><a>外部网络</a><a>IPv6</a><a>VPN</a><a>防火墙</a>
-      <div class="section">软件中心</div>
-      <a class="active">双 WAN 智能分流</a>
-    </aside>
-    <main class="content-wrap">
-      <div class="host-note">这里的左侧栏属于 Asuswrt-Merlin 宿主；P1 自身仍只使用右侧约 760px 内容区。</div>
-      <section class="panel">
-        <div class="panel-head"><h1>双 WAN 智能分流 <span class="small">0.8.1 UI Design</span></h1><p>家庭 WAN / 手机 USB WAN 严格分流与服务规则</p></div>
-        <nav class="tabs">
-          <div class="tab active" data-page="status">状态</div>
-          <div class="tab" data-page="service">服务分流</div>
-          <div class="tab" data-page="advanced">高级</div>
-          <div class="tab" data-page="adb">ADB 工具箱</div>
-          <div class="tab" data-page="about">说明</div>
-        </nav>
-
-        <div id="page-status" class="page active">
-          <div id="storageBanner" class="banner"><strong>正在使用应急副本</strong><div>外置存储当前不可用。P1 仍按上次可用规则分流；规则和配置更新已暂停。</div><div class="actions"><button class="btn secondary" id="retryStorage">重新检测存储</button></div></div>
-          <div id="staleBanner" class="stale">刷新失败 · 显示 16:20:03 的上次数据</div>
-          <div class="grid">
-            <div class="card"><div class="label">P1 运行状态</div><div class="value good">规则、策略路径与隔离 DNS 正常</div><div class="small">0.8.1 · 智能分流</div></div>
-            <div class="card"><div class="label">保护状态</div><div class="value good">严格保护已生效</div><div class="small">目标出口不可用时不会切换到另一 WAN</div></div>
-            <div class="card"><div class="label">家庭 WAN</div><div class="value good">可用</div><div class="small">eth0 · 192.168.10.145<br>接口、地址、网关与策略路径已就绪</div></div>
-            <div class="card"><div class="label">手机 USB</div><div class="value blue">可用</div><div class="small">usb0 · 192.168.42.232<br>加密 DNS 与策略路径已就绪</div></div>
-          </div>
-          <div class="status-row"><div><b>规则数据</b><div class="small" id="storageStatus">外置存储正常 · 使用完整规则数据</div></div><span class="tag good" id="storageTag">正常</span></div>
-          <div class="toolbar"><span class="small" style="margin-right:auto;padding-top:9px">最后刷新：16:20:03</span><button class="btn secondary" id="refreshStatus">刷新状态</button></div>
-        </div>
-
-        <div id="page-service" class="page">
-          <div id="serviceStorageWarn" class="banner"><strong>服务数据更新已暂停</strong><div>外置存储不可用，当前继续使用应急副本中的上次可用规则。</div></div>
-          <div id="serviceStale" class="stale">服务状态刷新失败 · 当前表格保留上次数据</div>
-          <div class="meta">
-            <div><h2>服务分流 <span id="serviceState" class="tag good">已是最新</span></h2><div class="meta-lines">V2Fly 服务规则 · 本地 <b id="localVersion">v2fly-b3a01c34</b><br>上次检查：今天 16:10 · 上次实际更新：9月4日 11:17<br>云端版本：<span id="cloudVersion">v2fly-b3a01c34</span></div></div>
-            <div><button class="btn" id="checkUpdate">检查更新</button><button class="btn" id="applyUpdate" style="display:none;margin-top:6px">更新服务数据</button></div>
-          </div>
-          <div class="note" style="margin-bottom:9px">更新只刷新服务域名数据，不改变你的出口选择；检查更新不会自动下载。</div>
-          <table class="rule-table">
-            <thead><tr><th style="width:50%">服务</th><th style="width:28%">出口</th><th>状态</th></tr></thead>
-            <tbody>
-              <tr class="parent"><td>Apple<span class="small"> · 常用大类</span></td><td><select class="sel"><option>家庭 WAN</option><option>手机 USB</option></select></td><td class="good">已就绪</td></tr>
-              <tr class="child"><td>↳ Apple Intelligence</td><td><select class="sel"><option>跟随大类</option><option selected>手机 USB</option><option>家庭 WAN</option></select></td><td class="good">已就绪</td></tr>
-              <tr class="child"><td>↳ iCloud</td><td><select class="sel"><option selected>跟随大类</option><option>手机 USB</option><option>家庭 WAN</option></select></td><td class="good">已就绪</td></tr>
-              <tr class="parent"><td>Google<span class="small"> · 常用大类</span></td><td><select class="sel"><option>家庭 WAN</option><option selected>手机 USB</option></select></td><td class="good">已就绪</td></tr>
-              <tr><td><b>OpenAI</b><span class="small"> · 独立服务</span></td><td><select class="sel"><option>家庭 WAN</option><option selected>手机 USB</option></select></td><td class="good">已就绪</td></tr>
-              <tr><td><b>Telegram</b><span class="small"> · 独立服务</span></td><td><select class="sel"><option selected>家庭 WAN</option><option>手机 USB</option></select></td><td class="good">已就绪</td></tr>
-            </tbody>
-          </table>
-          <div class="savebar"><span class="small">修改服务出口后统一保存，不逐行应用。</span><div><button class="btn secondary">放弃修改</button><button class="btn">保存并应用</button></div></div>
-        </div>
-
-        <div id="page-advanced" class="page">
-          <div class="note" style="margin-bottom:8px">普通使用无需进入这里。这里用于特殊规则、固定设备、旧配置兼容和排障。</div>
-          <div class="advanced-tabs">
-            <div class="adv" data-adv="test">规则测试</div><div class="adv" data-adv="custom">我的自定义规则</div><div class="adv active" data-adv="device">设备固定出口</div><div class="adv" data-adv="yaml">YAML 高级规则</div><div class="adv" data-adv="cn">中国基础规则库</div><div class="adv" data-adv="diag">检测与日志</div>
-          </div>
-          <div id="adv-test" class="adv-page"><div class="placeholder">规则测试保持 0.7.9 现有能力，本次不改信息结构。</div></div>
-          <div id="adv-custom" class="adv-page"><div class="placeholder">我的自定义规则保持与设备固定出口分离。</div></div>
-          <div id="adv-device" class="adv-page active">
-            <div class="device-head"><div><h3>设备固定出口</h3><div class="small">固定出口会覆盖这台设备的服务分流，只影响公网新连接。局域网、路由器管理和 Tailscale 访问不受影响。</div></div><button class="btn" id="addDevice">添加设备</button></div>
-            <div id="deviceStorageWarn" class="banner"><strong>当前不可修改设备规则</strong><div>外置存储不可用。为避免配置双真值，请恢复存储后再修改；现有规则继续生效。</div></div>
-            <div id="deviceForm" class="form">
-              <div class="form-grid"><div><label>设备 IPv4</label><input class="text" id="deviceIp" value="192.168.50.40"></div><div><label>出口</label><select class="sel" id="deviceTarget"><option>手机 USB</option><option>家庭 WAN</option></select></div><div><label>备注（可选）</label><input class="text" id="deviceNote" value="vivo X200 Ultra"></div></div>
-              <div class="form-foot"><button class="btn secondary" id="cancelDevice">取消</button><button class="btn" id="saveDevice">保存</button></div>
-            </div>
-            <table class="device-table"><thead><tr><th>设备 IPv4</th><th>出口</th><th>状态</th><th>备注</th><th>操作</th></tr></thead><tbody id="deviceBody"><tr><td>192.168.50.26</td><td class="good">家庭 WAN</td><td class="good">已启用</td><td>客厅 iPad</td><td><span class="link edit-device">编辑</span> · <span class="link toggle-device">停用</span></td></tr></tbody></table>
-            <div class="small" style="margin-top:8px">设备出口变更只影响新连接；已有连接会自然结束后切换。</div>
-          </div>
-          <div id="adv-yaml" class="adv-page"><div class="placeholder">YAML 高级规则按需加载。应急副本模式下写入操作会暂停。</div></div>
-          <div id="adv-cn" class="adv-page"><div class="section-head">中国基础规则库</div><div class="note">用于国内 / 非国内的基础判断；V2Fly 服务规则用于具体服务。两者不是同一套数据。</div><div class="status-row"><div><b>当前规则</b><div class="small">上次实际更新：2026-09-03 03:17</div></div><button class="btn secondary storage-write">检查基础规则更新</button></div></div>
-          <div id="adv-diag" class="adv-page"><div class="placeholder">运行检查 / 查看运行日志。技术 hash、manifest、规则数量等细节放在这里。</div></div>
-        </div>
-
-        <div id="page-adb" class="page"><div class="placeholder">ADB 工具箱继承 0.7.9，本轮不扩功能。</div></div>
-        <div id="page-about" class="page"><div class="note"><b>0.8.1</b> 专注 P1 本地路由插件：外置存储应急启动、设备固定出口、稳定刷新体验、规则版本与更新状态。<br><br>不包含 Router Agent、telemetry、Mac Dashboard、P13 control 等 0.8.0 观测/控制能力。</div></div>
-      </section>
-    </main>
-  </div>
+  <div class="dws-toolbar"><span id="last_refresh" class="dws-refresh-time">最后刷新：16:37:12</span><button id="refresh_btn" class="dws-btn secondary">刷新状态</button><button class="dws-btn">发起 ADB / 恢复 USB 网络</button></div>
 </div>
-<div id="toast" class="toast"></div><div class="preview-label">P1 R17 · 0.8.1 Design Prototype · not production UI</div>
+
+<div id="panel_services" class="dws-panel">
+  <div class="dws-service-meta"><button id="btn_check" class="dws-btn">检查更新</button><button id="btn_service_update" class="dws-btn" style="display:none">更新服务数据</button><strong>服务分流</strong><br/>来源：<span>Cloudflare R2 · v2fly/domain-list-community</span><br/>
+    <div class="version-grid"><span>本地版本：<b id="local_version">v2fly-b3a01c34</b></span><span>云端版本：<b id="cloud_version">v2fly-b3a01c34</b></span><span>上次检查：<b id="last_check">今天 16:10</b></span><span>上次实际更新：<b>9月4日 11:17</b></span></div>
+    <span id="service_hint" class="dws-small">大类决定默认出口，特殊小类可以单独覆盖。检查更新只读取版本信息，不会自动下载；失败继续使用上次成功版本。</span>
+  </div>
+  <table class="dws-rule-table"><thead><tr><th style="width:44%">服务</th><th style="width:28%">出口</th><th>状态</th></tr></thead><tbody>
+    <tr class="dws-service-parent"><td class="dws-service-name">Apple<span class="dws-service-desc">大类默认</span></td><td><select class="dws-service-select"><option selected>家庭 WAN</option><option>手机 USB</option></select></td><td><span class="dws-good">家庭 WAN · 已就绪</span></td></tr>
+    <tr class="dws-service-child"><td class="dws-service-name">Apple Intelligence<span class="dws-service-desc">特殊例外</span></td><td><select class="dws-service-select"><option>跟随 Apple</option><option selected>手机 USB</option><option>家庭 WAN</option></select></td><td><span class="dws-good">手机 USB · 已就绪</span></td></tr>
+    <tr class="dws-service-child"><td class="dws-service-name">iCloud<span class="dws-service-desc">特殊例外</span></td><td><select class="dws-service-select"><option selected>跟随 Apple</option><option>手机 USB</option><option>家庭 WAN</option></select></td><td><span class="dws-good">家庭 WAN · 已就绪</span></td></tr>
+    <tr class="dws-service-parent"><td class="dws-service-name">Google<span class="dws-service-desc">大类默认</span></td><td><select class="dws-service-select"><option>家庭 WAN</option><option selected>手机 USB</option></select></td><td><span class="dws-good">手机 USB · 已就绪</span></td></tr>
+    <tr><td class="dws-service-name">OpenAI</td><td><select class="dws-service-select"><option>家庭 WAN</option><option selected>手机 USB</option></select></td><td><span class="dws-good">手机 USB · 已就绪</span></td></tr>
+    <tr><td class="dws-service-name">Telegram</td><td><select class="dws-service-select"><option>家庭 WAN</option><option selected>手机 USB</option></select></td><td><span class="dws-good">手机 USB · 已就绪</span></td></tr>
+  </tbody></table>
+  <div class="dws-savebar"><span class="dws-dirty">没有未保存修改</span><span class="dws-actions"><button class="dws-btn secondary" disabled>放弃修改</button><button class="dws-btn" disabled>保存并应用</button></span></div>
+</div>
+
+<div id="panel_advanced" class="dws-panel">
+  <p class="dws-note"><strong>普通使用无需进入这里。</strong>这里用于特殊规则、旧配置兼容和排障。高级人工 override 优先于服务分流。</p>
+  <div class="dws-advanced-tabs"><div class="dws-advanced-tab on" data-advanced="adv_test">规则测试</div><div class="dws-advanced-tab" data-advanced="adv_custom">我的自定义规则</div><div class="dws-advanced-tab" data-advanced="adv_devices">设备固定出口</div><div class="dws-advanced-tab" data-advanced="adv_yaml">YAML 高级规则</div><div class="dws-advanced-tab" data-advanced="adv_china">中国基础规则库</div><div class="dws-advanced-tab" data-advanced="adv_diag">检测与日志</div></div>
+  <div id="adv_test" class="dws-advanced-panel on"><table class="FormTable"><thead><tr><td colspan="2">规则预测与双出口实测</td></tr></thead><tr><th>链接或域名</th><td><input class="dws-text" value="https://mail.google.com/"/><div class="dws-toolbar"><button class="dws-btn">判断出口并测试</button></div></td></tr><tr><th>结果</th><td><textarea style="width:98%;height:150px;background:#101719;color:#e6f0f2;border:1px solid #6b8fa3;padding:10px" readonly>预计实际出口：MOBILE
+HOME：可连接
+MOBILE：可连接
+高级人工 override：无</textarea></td></tr></table></div>
+  <div id="adv_custom" class="dws-advanced-panel"><table class="dws-rule-table"><thead><tr><th>状态</th><th>域名 / IP</th><th>出口</th><th>备注</th><th>创建时间</th><th>操作</th></tr></thead><tbody><tr><td>启用</td><td>example.com</td><td class="dws-target-HOME">HOME</td><td>示例</td><td>2026-09-01</td><td><button class="dws-btn secondary">停用</button><button class="dws-btn danger">删除</button></td></tr></tbody></table><p class="dws-note">这是显式高级 override，优先于 V2Fly 服务分流。</p></div>
+  <div id="adv_devices" class="dws-advanced-panel">
+    <p class="dws-note"><strong>设备固定出口。</strong>指定一个 LAN IPv4 的公网流量固定使用 HOME 或 MOBILE。局域网、路由器管理和 Tailscale 仍优先绕过；指定出口不可用时直接失败，不切换另一条 WAN。</p>
+    <div class="device-form" id="device_form"><div class="device-form-grid"><div><label>设备 IPv4</label><input id="dev_ip" value="192.168.50.40" /></div><div><label>固定出口</label><select id="dev_target"><option>手机 USB</option><option>家庭 WAN</option></select></div><div><label>备注</label><input id="dev_note" value="vivo X200 Ultra" /></div><div><button id="add_device" class="dws-btn">添加</button></div></div></div>
+    <table class="dws-rule-table"><thead><tr><th>状态</th><th>设备 IPv4</th><th>固定出口</th><th>备注</th><th>操作</th></tr></thead><tbody id="device_rows"><tr><td><span class="dws-good">启用</span></td><td>192.168.50.26</td><td class="dws-target-MOBILE">手机 USB</td><td>测试设备</td><td class="device-actions"><button class="dws-btn secondary">停用</button><button class="dws-btn danger">删除</button></td></tr></tbody></table>
+    <div class="dws-small" style="margin-top:8px">变更只更新设备规则，不 full-apply 主 YAML；只影响新连接，不清全局 conntrack。</div>
+  </div>
+  <div id="adv_yaml" class="dws-advanced-panel"><textarea id="yaml_editor">version: 1
+mode: rule
+ipv6: false
+strict: true
+home-dns: 223.5.5.5
+mobile-dns: 1.1.1.1
+rules:
+  - GEOSITE,CN,HOME
+  - GEOIP,CN,HOME
+  - MATCH,MOBILE</textarea><div class="dws-toolbar"><button class="dws-btn secondary">整理格式</button><button class="dws-btn secondary">导出</button><button class="dws-btn danger">恢复上次成功配置</button><button class="dws-btn secondary">检查 YAML（不保存）</button><button class="dws-btn">保存并应用</button></div></div>
+  <div id="adv_china" class="dws-advanced-panel"><p class="dws-note">这是底层国内/国际自动分流数据，与 V2Fly 服务分流不是同一套数据。普通使用无需操作。</p><table class="FormTable"><tr><th>当前状态</th><td>2026-09-04 · 已就绪</td></tr><tr><th>操作</th><td><button class="dws-btn secondary update-write">下载中国基础规则库</button></td></tr></table></div>
+  <div id="adv_diag" class="dws-advanced-panel"><div class="dws-toolbar"><button class="dws-btn">运行检查</button><button class="dws-btn secondary">查看运行日志</button></div><textarea style="width:98%;height:220px;background:#101719;color:#e6f0f2;border:1px solid #6b8fa3;padding:10px" readonly>尚未执行。</textarea></div>
+</div>
+
+<div id="panel_adb" class="dws-panel">
+  <p class="dws-note">ADB 核心程序和授权密钥保存在 JFFS。APK 可临时放在内存中安装，也可保存到外置磁盘。</p>
+  <div class="dws-grid"><div class="dws-card"><div class="dws-card-title">ADB 状态</div><div class="dws-card-value"><span class="dws-good">已连接并授权</span></div></div><div class="dws-card"><div class="dws-card-title">手机</div><div class="dws-card-value">vivo X200 Ultra · Android</div></div><div class="dws-card"><div class="dws-card-title">电池</div><div class="dws-card-value">78% · 32.1°C</div></div><div class="dws-card"><div class="dws-card-title">USB 功能</div><div class="dws-card-value">rndis,adb</div></div><div class="dws-card"><div class="dws-card-title">外置存储</div><div id="adb_storage" class="dws-card-value"><span class="dws-good">已就绪</span></div></div><div class="dws-card"><div class="dws-card-title">数据目录</div><div class="dws-card-value dws-path">/tmp/mnt/WANSTORE/dwsplit-data</div></div><div class="dws-card"><div class="dws-card-title">路由器内存</div><div class="dws-card-value">可用 142 MB</div></div><div class="dws-card"><div class="dws-card-title">临时安装安全上限</div><div class="dws-card-value">本次最多 100 MB</div></div></div>
+  <table class="FormTable"><thead><tr><td colspan="2">外置存储</td></tr></thead><tr><th>挂载磁盘</th><td><select class="dws-select update-write"><option>WANSTORE</option></select><button class="dws-btn update-write">初始化目录</button><div class="dws-small">只创建 dwsplit-data，不格式化磁盘，也不删除现有文件。</div></td></tr></table>
+  <div class="dws-section-head">辅助与故障取证</div><div class="dws-note"><strong>导出手机第三方 App 清单：</strong>把手机用户安装 App 的包名、APK 路径和安装来源保存到外置磁盘，不备份 APK。<br/><strong>采集手机 USB 共享故障诊断：</strong>采集 Android USB/connectivity/IP/近期 logcat，以及路由器 WAN1/USB 内核状态到外置磁盘；不写 JFFS。</div>
+  <div class="dws-toolbar"><button class="dws-btn secondary">刷新设备</button><button class="dws-btn secondary update-write">导出手机第三方 App 清单</button><button class="dws-btn update-write">采集手机 USB 共享故障诊断</button></div>
+</div>
+
+<div id="panel_help" class="dws-panel">
+  <p class="dws-note"><strong>日常只需要“服务分流”。</strong>家庭 WAN 用于 HOME，手机 USB 用于 MOBILE。大类提供默认出口，缩进的小类默认跟随大类，也可以单独覆盖。</p>
+  <p class="dws-note">服务数据由 GitHub Action 从 <strong>v2fly/domain-list-community</strong> 生成并发布到 Cloudflare R2。0.8.1 中“检查更新”只检查 manifest；确认有新版本后，用户再点“更新服务数据”。</p>
+  <p class="dws-note">任一 WAN 不可用时保持 strict fail-closed：被指定到该 WAN 的流量直接失败，不偷偷改走另一条 WAN。局域网、回环、链路本地和 Tailscale 固定绕过。</p>
+  <div class="dws-section-head">0.8.1 新增</div><p class="dws-note">外置存储故障时使用 JFFS 应急副本；高级新增“设备固定出口”；刷新失败保留 last-good 页面数据；服务规则把“检查”和“实际下载更新”拆开。</p>
+</div>
+</td></tr></table>
+  </main>
+</div>
 <script>
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-let mode='normal', updateAvailable=false, deviceAdded=false;
-function toast(t,bad=false){const el=$('#toast');el.textContent=t;el.style.borderLeftColor=bad?'#ff7777':'#62d26f';el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2300)}
-$$('.tab').forEach(t=>t.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');$$('.page').forEach(x=>x.classList.remove('active'));$('#page-'+t.dataset.page).classList.add('active')});
-$$('.adv').forEach(t=>t.onclick=()=>{$$('.adv').forEach(x=>x.classList.remove('active'));t.classList.add('active');$$('.adv-page').forEach(x=>x.classList.remove('active'));$('#adv-'+t.dataset.adv).classList.add('active')});
-function setMode(next){mode=next;$$('.pbtn').forEach(b=>b.classList.toggle('on',b.dataset.mode===next));const storage=next==='storage', stale=next==='stale';$('#storageBanner').style.display=storage?'block':'none';$('#serviceStorageWarn').style.display=storage?'block':'none';$('#deviceStorageWarn').style.display=storage?'block':'none';$('#staleBanner').style.display=stale?'block':'none';$('#serviceStale').style.display=stale?'block':'none';$('#storageStatus').textContent=storage?'外置存储不可用 · 使用 JFFS 应急副本':'外置存储正常 · 使用完整规则数据';$('#storageTag').textContent=storage?'应急副本':'正常';$('#storageTag').className='tag '+(storage?'warn':'good');$('#checkUpdate').disabled=storage;$('#applyUpdate').disabled=storage;$('#addDevice').disabled=storage;$$('.storage-write').forEach(b=>b.disabled=storage);if(storage) toast('已切换到“外置存储故障”设计状态');if(stale) toast('已有数据保留，只显示刷新失败提示');}
-$$('.pbtn').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
-$('#retryStorage').onclick=()=>{toast('重新检测：外置存储已恢复');setTimeout(()=>setMode('normal'),500)};
-$('#refreshStatus').onclick=()=>{if(mode==='stale'){toast('刷新仍失败，继续显示上次数据',true)}else toast('状态已刷新')};
-$('#checkUpdate').onclick=()=>{if(mode==='storage')return;const b=$('#checkUpdate');b.disabled=true;b.textContent='检查中…';$('#serviceState').textContent='正在检查';$('#serviceState').className='tag';setTimeout(()=>{updateAvailable=true;b.disabled=false;b.textContent='再次检查';$('#cloudVersion').textContent='v2fly-d91ae604';$('#serviceState').textContent='有新版本';$('#serviceState').className='tag warn';$('#applyUpdate').style.display='block';toast('发现新版本；尚未下载')},800)};
-$('#applyUpdate').onclick=()=>{if(mode==='storage')return;const b=$('#applyUpdate');b.disabled=true;b.textContent='更新中…';setTimeout(()=>{$('#localVersion').textContent='v2fly-d91ae604';$('#serviceState').textContent='已是最新';$('#serviceState').className='tag good';b.style.display='none';b.disabled=false;b.textContent='更新服务数据';toast('服务数据已更新；出口选择未改变')},900)};
-$('#addDevice').onclick=()=>{if(mode==='storage')return;$('#deviceForm').classList.add('show');$('#deviceIp').value='192.168.50.40';$('#deviceTarget').value='手机 USB';$('#deviceNote').value='vivo X200 Ultra'};
-$('#cancelDevice').onclick=()=>$('#deviceForm').classList.remove('show');
-$('#saveDevice').onclick=()=>{const ip=$('#deviceIp').value.trim();if(!/^\d+\.\d+\.\d+\.\d+$/.test(ip)){toast('请输入有效 IPv4',true);return}const target=$('#deviceTarget').value,note=$('#deviceNote').value.trim();if(!deviceAdded){const tr=document.createElement('tr');tr.innerHTML=`<td>${ip}</td><td class="${target==='家庭 WAN'?'good':'blue'}">${target}</td><td class="good">已启用</td><td>${note||'—'}</td><td><span class="link edit-device">编辑</span> · <span class="link toggle-device">停用</span></td>`;$('#deviceBody').appendChild(tr);deviceAdded=true}else{const tr=$('#deviceBody').lastElementChild;tr.children[0].textContent=ip;tr.children[1].textContent=target;tr.children[1].className=target==='家庭 WAN'?'good':'blue';tr.children[3].textContent=note||'—'}$('#deviceForm').classList.remove('show');bindDeviceRows();toast('已生效于新连接；已有连接会自然结束后切换。')};
-function bindDeviceRows(){$$('.edit-device').forEach((e,i)=>e.onclick=()=>{if(mode==='storage'){toast('外置存储不可用，当前不可修改',true);return}const tr=e.closest('tr');$('#deviceIp').value=tr.children[0].textContent;$('#deviceTarget').value=tr.children[1].textContent;$('#deviceNote').value=tr.children[3].textContent==='—'?'':tr.children[3].textContent;$('#deviceForm').classList.add('show')});$$('.toggle-device').forEach(e=>e.onclick=()=>{if(mode==='storage'){toast('外置存储不可用，当前不可修改',true);return}const tr=e.closest('tr'),cell=tr.children[2];const enabled=cell.textContent==='已启用';cell.textContent=enabled?'已停用':'已启用';cell.className=enabled?'warn':'good';e.textContent=enabled?'启用':'停用';toast(enabled?'设备规则已停用':'设备规则已启用')})}bindDeviceRows();
+(function(){
+  var tabs=document.querySelectorAll('.dws-tab'), panels=document.querySelectorAll('.dws-panel');
+  tabs.forEach(function(t){t.onclick=function(){tabs.forEach(function(x){x.classList.remove('on')});panels.forEach(function(x){x.classList.remove('on')});t.classList.add('on');document.getElementById(t.dataset.panel).classList.add('on')}});
+  var atabs=document.querySelectorAll('.dws-advanced-tab'), ap=document.querySelectorAll('.dws-advanced-panel');
+  atabs.forEach(function(t){t.onclick=function(){atabs.forEach(function(x){x.classList.remove('on')});ap.forEach(function(x){x.classList.remove('on')});t.classList.add('on');document.getElementById(t.dataset.advanced).classList.add('on')}});
+  var modes=document.querySelectorAll('.preview-controls button');
+  function setMode(mode){modes.forEach(function(b){b.classList.toggle('on',b.dataset.mode===mode)});document.getElementById('storage_banner').style.display=mode==='storage'?'block':'none';document.getElementById('stale_banner').style.display=mode==='stale'?'block':'none';document.getElementById('adb_storage').innerHTML=mode==='storage'?'<span class="dws-warn">不可用</span>':'<span class="dws-good">已就绪</span>';document.getElementById('china_status').innerHTML=mode==='storage'?'JFFS 应急副本<br/><span class="dws-small">规则更新已暂停</span>':'8742 条中国 IP · 21234 条域名<br/><span class="dws-small">2026-09-04</span>';document.querySelectorAll('.update-write').forEach(function(x){x.classList.toggle('disabled-by-storage',mode==='storage')});if(mode==='stale'){document.getElementById('last_refresh').textContent='最后刷新：16:37:12（上次成功）'}else{document.getElementById('last_refresh').textContent='最后刷新：16:37:12'}}
+  modes.forEach(function(b){b.onclick=function(){setMode(b.dataset.mode)}});
+  document.getElementById('refresh_btn').onclick=function(){if(document.querySelector('.preview-controls button.on').dataset.mode==='stale'){document.getElementById('stale_banner').style.display='block'}else{document.getElementById('message').style.display='block';document.getElementById('message').textContent='状态已刷新；页面未闪空。';setTimeout(function(){document.getElementById('message').style.display='none'},1600)}};
+  document.getElementById('btn_check').onclick=function(){this.textContent='检查中…';var self=this;setTimeout(function(){self.textContent='检查更新';document.getElementById('cloud_version').textContent='v2fly-c91e73a2';document.getElementById('last_check').textContent='刚刚';document.getElementById('btn_service_update').style.display='inline-block';document.getElementById('service_hint').innerHTML='<span class="dws-warn">发现新版本。检查过程没有下载规则数据；需要时请点击“更新服务数据”。</span>'},700)};
+  document.getElementById('btn_service_update').onclick=function(){if(document.querySelector('.preview-controls button.on').dataset.mode==='storage')return;this.textContent='更新中…';var self=this;setTimeout(function(){document.getElementById('local_version').textContent=document.getElementById('cloud_version').textContent;self.style.display='none';self.textContent='更新服务数据';document.getElementById('service_hint').innerHTML='<span class="dws-good">服务数据已更新；出口选择未改变。</span>'},900)};
+  document.getElementById('add_device').onclick=function(){var ip=document.getElementById('dev_ip').value||'-', target=document.getElementById('dev_target').value, note=document.getElementById('dev_note').value||'-', tr=document.createElement('tr');tr.innerHTML='<td><span class="dws-good">启用</span></td><td>'+ip+'</td><td class="'+(target.indexOf('手机')>=0?'dws-target-MOBILE':'dws-target-HOME')+'">'+target+'</td><td>'+note+'</td><td class="device-actions"><button class="dws-btn secondary">停用</button><button class="dws-btn danger">删除</button></td>';document.getElementById('device_rows').appendChild(tr)};
+})();
 </script>
-</body>
-</html>
+</body></html>
