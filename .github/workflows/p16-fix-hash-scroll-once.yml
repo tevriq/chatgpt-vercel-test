@@ -1,0 +1,38 @@
+name: P16 Fix Hash Scroll Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/p16-fix-hash-scroll-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Patch S4 navigation
+        run: python3 .github/p16_fix_hash_scroll.py
+      - name: Verify navigation contract
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          t=Path('public/p16-s4-cloud-acceptance.html').read_text()
+          assert "history.replaceState(null,'',`#${id}`)" in t
+          assert ";location.hash=id;" not in t
+          assert "window.scrollTo({top:0,behavior:'auto'})" in t
+          PY
+      - name: Commit and self-clean
+        run: |
+          git config user.name 'P16 Cloud Acceptance'
+          git config user.email 'actions@users.noreply.github.com'
+          git rm .github/p16_fix_hash_scroll.py .github/workflows/p16-fix-hash-scroll-once.yml
+          git add public/p16-s4-cloud-acceptance.html
+          git commit -m 'fix: stop P16 hash navigation from re-scrolling pages'
+          git push origin HEAD:main
