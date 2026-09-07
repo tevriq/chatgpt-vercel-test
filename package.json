@@ -4,6 +4,8 @@
     "build": "next build"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "latest",
+    "@radix-ui/react-dropdown-menu": "latest",
     "@radix-ui/react-tabs": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
