@@ -1,442 +1,88 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>P1 双 WAN 智能分流 · 0.9.1 UI Prototype</title>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>P1 UI Prototype</title>
 <style>
-:root{
-  --bg:#46575b;--bg2:#3c4c50;--panel:#26383d;--panel2:#30464c;--panel3:#203136;
-  --line:#7596a4;--line2:#587885;--text:#f4f7f8;--muted:#d0d8db;--dim:#9fb0b5;
-  --accent:#2699ad;--accent2:#167d90;--good:#48dd73;--warn:#ffd166;--bad:#ff6f76;--blue:#65b7ff;
-  --shadow:0 12px 34px rgba(0,0,0,.24)
-}
-*{box-sizing:border-box}
-html,body{margin:0;background:#354449;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
-button,input,select,textarea{font:inherit}
-body{min-height:100vh}
-.shell{max-width:1380px;margin:0 auto;padding:12px 10px 36px}
-.header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #6f858c;padding:14px 6px 18px}
-.header h1{margin:0;font-size:27px;letter-spacing:.01em;text-shadow:0 2px 2px #1e282b}
-.back{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;border:2px solid #b8d0dc;background:linear-gradient(#2e8cc9,#0e5d9e);font-size:36px;font-weight:800;box-shadow:inset 0 0 0 3px #176da5}
-.sub{font-size:14px;color:#e2e8ea;margin:18px 0 12px;line-height:1.7}
-.previewbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:10px 12px;border:1px solid #6f8992;background:#33474d}
-.previewbar b{font-size:12px;margin-right:6px}
-.pbtn{border:1px solid #7fa1af;background:#40565d;color:#eef5f7;padding:7px 10px;border-radius:3px;cursor:pointer;font-size:12px}
-.pbtn.on{background:var(--accent);border-color:#75c9d6;font-weight:700}
-.proto-note{margin-left:auto;font-size:11px;color:#c8d3d6}
-.tabs{display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid #80a0ae;padding-bottom:0}
-.tab,.advtab{border:1px solid #7fa1af;background:#33474d;color:white;padding:13px 28px;cursor:pointer;font-weight:650;font-size:15px}
-.tab.on,.advtab.on{background:var(--accent);border-color:#7fd1dc}
-.panel{display:none;padding-top:14px}.panel.on{display:block}
-.notice{border:1px solid #829ca5;background:#3c5056;padding:11px 13px;line-height:1.6;font-size:13px;margin-bottom:12px}
-.banner{display:none;border:1px solid #d3b657;background:#5b5332;padding:12px 14px;margin-bottom:12px}
-.banner.bad{border-color:#d76870;background:#5c363a}
-.banner.on{display:block}.banner strong{display:block;margin-bottom:4px}
-.tx{display:none;border:1px solid #e7c75c;background:#5f5837;padding:11px 13px;margin-bottom:12px;align-items:center;justify-content:space-between;gap:12px}
-.tx.on{display:flex}.tx .meta{font-size:12px;color:#f7e9b5;margin-top:3px}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}
-.card{border:1px solid #7898a5;background:#293c41;padding:11px 12px;min-height:82px}
-.card .k{font-size:11px;color:#c9d3d6}.card .v{font-size:17px;font-weight:700;margin-top:7px;word-break:break-word}.card .s{font-size:11px;color:#b3c1c6;margin-top:5px;line-height:1.45}
-.good{color:var(--good)!important}.warn{color:var(--warn)!important}.badc{color:var(--bad)!important}.blue{color:var(--blue)!important}
-.block{border:1px solid #7898a5;background:#2d4147;margin:10px 0}
-.block-title{font-weight:700;background:linear-gradient(#697b80,#576a70);padding:9px 12px;border-bottom:1px solid #7898a5}
-.block-body{padding:10px 12px}
-.row{display:grid;grid-template-columns:35% 65%;border-bottom:1px solid #647e88}
-.row:last-child{border-bottom:0}.row>div{padding:10px 12px}.row .label{background:#293b40;font-weight:600}.row .value{background:#3d5056}
-.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
-.btn{border:1px solid #74a4b8;background:var(--accent);color:#fff;padding:8px 13px;cursor:pointer;border-radius:3px;font-weight:650}
-.btn.secondary{background:#3d5259}.btn.danger{background:#a83f45}.btn:disabled{opacity:.42;cursor:not-allowed}
-.seg{display:inline-flex;border:1px solid #7695a3}
-.seg button{border:0;border-right:1px solid #7695a3;background:#32474d;color:white;padding:8px 12px;cursor:pointer}
-.seg button:last-child{border-right:0}.seg button.on{background:var(--accent);font-weight:700}
-.small{font-size:11px;color:#c4cfd2;line-height:1.55}.path{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px}
-.statusline{font-size:14px;line-height:1.75}
-.tablewrap{overflow:auto;border:1px solid #7898a5;background:#33474d}
-table{border-collapse:collapse;width:100%;min-width:720px}
-th,td{border-right:1px solid #7898a5;border-bottom:1px solid #7898a5;padding:11px 12px;text-align:left;font-size:13px;vertical-align:middle}
-th:last-child,td:last-child{border-right:0}tr:last-child td{border-bottom:0}
-th{background:#50666c;font-weight:700}.parent td:first-child{font-weight:700}.child td:first-child{padding-left:30px}
-select,input[type=text],input[type=number],textarea{background:#20343a;color:white;border:1px solid #7ba0b0;padding:8px 9px}
-select{min-width:170px}.text{width:100%}
-.savebar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px}
-.adv-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}.advtab{padding:10px 18px;font-size:13px}
-.advpanel{display:none}.advpanel.on{display:block}
-.device-form{border:1px solid #7d9ba7;background:#33494f;margin:10px 0;padding:10px}
-.formgrid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end}
-.formgrid label{display:block;font-size:11px;color:#d0d9dc;margin-bottom:5px}
-.kv{display:grid;grid-template-columns:170px 1fr;border:1px solid #7595a2}.kv>div{padding:10px;border-bottom:1px solid #6f8993}.kv>div:nth-last-child(-n+2){border-bottom:0}.kv>div:nth-child(odd){background:#293b40;font-weight:650}.kv>div:nth-child(even){background:#3c5056}
-.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.code{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#15282d;border:1px solid #7898a5;padding:10px;font-size:11px;line-height:1.6;color:#d9e5e8}
-summary{cursor:pointer;padding:10px;font-weight:650}
-.toast{position:fixed;right:18px;bottom:18px;background:#203338;border:1px solid #7a9aa7;padding:11px 14px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:.18s;pointer-events:none;z-index:9}
-.toast.on{opacity:1;transform:translateY(0)}
-.tag{display:inline-block;padding:3px 7px;border:1px solid currentColor;font-size:10px;margin-left:5px}
-.helpgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.help{border:1px solid #7898a5;background:#2b4046;padding:12px}.help h3{font-size:14px;margin:0 0 7px}.help p{margin:0;font-size:12px;color:#d2dcdf;line-height:1.65}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.twocol,.helpgrid{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr 1fr}.proto-note{width:100%;margin-left:0}}
-@media(max-width:620px){.shell{padding:8px}.header h1{font-size:20px}.back{width:48px;height:48px;font-size:26px}.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.tab{padding:10px 12px}.advtab{padding:8px 10px}.formgrid{grid-template-columns:1fr}.savebar,.tx.on{align-items:flex-start;flex-direction:column}.kv{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-<div class="shell">
-  <div class="header">
-    <h1>软件中心 - 双 WAN 智能分流 <span style="font-size:.8em">v0.9.1 UI Prototype</span></h1>
-    <div class="back">↶</div>
-  </div>
-  <div class="sub">普通使用只需在“服务分流”选择常用服务出口。PRIMARY = 家庭 WAN，INTL = 手机 USB；高级规则、按设备固定出口和排障工具统一放在“高级”。本页为设计预览，不连接真实路由器。</div>
+:root{--bg:#354449;--p:#30464c;--p2:#26393e;--l:#7897a4;--a:#2295aa;--g:#5fe37c;--y:#ffd166;--r:#ff7379}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}button,input,select,textarea{font:inherit}
+.wrap{width:min(760px,100%);margin:auto;padding:10px}.title{font-size:21px;font-weight:700;padding:12px 4px;border-bottom:1px solid var(--l)}.note,.box,.banner{border:1px solid var(--l);background:var(--p);padding:10px 12px;margin:10px 0;line-height:1.6}.banner{display:none}.banner.on{display:block}.warn{background:#5a5333}.bad{background:#5b373b}
+.tabs,.subs{display:flex;flex-wrap:wrap;gap:5px;margin:10px 0;border-bottom:1px solid var(--l)}.tab,.sub{border:1px solid var(--l);background:#354c52;color:#fff;padding:9px 13px;cursor:pointer}.tab.on,.sub.on{background:var(--a);font-weight:700}.panel,.subpanel{display:none}.panel.on,.subpanel.on{display:block}
+h3{font-size:14px;margin:12px 0 0;background:#5b6d72;padding:8px 10px;border:1px solid var(--l);border-bottom:0}.body{border:1px solid var(--l);background:#31474d;padding:10px}
+.tbl{width:100%;border-collapse:collapse}.tbl th,.tbl td{border:1px solid var(--l);padding:8px;text-align:left;font-size:12px;vertical-align:top}.tbl th{background:#50666c}.form th{width:31%;background:#293d42}
+.btn{border:1px solid #7ea1ae;background:var(--a);color:#fff;padding:7px 10px;cursor:pointer;margin:2px}.btn.sec{background:#40575e}.btn.danger{background:#984047}.btn:disabled{opacity:.45}.seg{display:inline-flex;border:1px solid var(--l)}.seg button{border:0;border-right:1px solid var(--l);background:#34494f;color:#fff;padding:7px 9px;cursor:pointer}.seg button:last-child{border-right:0}.seg button.on{background:var(--a);font-weight:700}
+.small{font-size:11px;color:#cad6d9;line-height:1.55}.good{color:var(--g)}.yellow{color:var(--y)}.red{color:var(--r)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.card{border:1px solid var(--l);background:#2b4045;padding:10px}.card b{display:block;font-size:12px}.card strong{display:block;font-size:17px;margin:5px 0}.actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px}.right{justify-content:flex-end}.dirty{margin-right:auto}.code{white-space:pre-wrap;background:#18292e;border:1px solid var(--l);padding:8px;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}.toast{position:fixed;right:15px;bottom:15px;background:#203238;border:1px solid var(--l);padding:9px 11px;opacity:0}.toast.on{opacity:1}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.form th{width:39%}.title{font-size:18px}}
+</style></head><body><div class="wrap">
+<div class="title">软件中心 - 双 WAN 智能分流 · UI Prototype</div>
+<div class="note small">按 Merlin 软件中心约 760px 内容区设计。PRIMARY = 家庭 WAN，INTL = 手机 USB。这里只确认 UI / 交互。</div>
 
-  <div class="previewbar">
-    <b>原型状态</b>
-    <button class="pbtn on" data-mode="normal">正常</button>
-    <button class="pbtn" data-mode="blocked">INTL 安全阻断</button>
-    <button class="pbtn" data-mode="storage">外置存储回退</button>
-    <button class="pbtn" data-mode="stale">刷新失败</button>
-    <button class="pbtn" data-mode="pending">90 秒事务</button>
-    <span class="proto-note">历史 0.9.0 修复只继承仍成立的行为，不继承旧 Go runtime 实现。</span>
-  </div>
+<div class="actions"><span class="small">原型状态：</span><button class="btn sec st" data-s="normal">正常</button><button class="btn sec st" data-s="blocked">INTL 安全阻断</button><button class="btn sec st" data-s="storage">外置存储故障</button><button class="btn sec st" data-s="stale">刷新失败</button><button class="btn sec st" data-s="pending">90 秒待确认</button></div>
+<div id="bStorage" class="banner warn"><b>正在使用应急副本</b><br><span class="small">现有规则继续工作，配置/规则更新暂停。</span></div>
+<div id="bStale" class="banner warn"><b>刷新失败 · 显示上次成功数据</b><br><span class="small">页面不清空，旧响应不能覆盖更新后的状态。</span></div>
+<div id="bBlocked" class="banner bad"><b>INTL 不可用 · 已安全阻断</b><br><span class="small">保持 fail-closed，不自动切 PRIMARY，也不把正确 blackhole 误当故障修复。</span></div>
+<div id="bPending" class="banner warn"><b>当前变更正在试运行 · 01:26</b><br><span class="small">超时自动恢复上一版。</span><div class="actions"><button id="rollback" class="btn danger">立即撤销</button><button id="confirm" class="btn">确认保留</button></div></div>
 
-  <div id="storageBanner" class="banner"><strong>正在使用应急副本</strong>外置存储当前不可用。P1 继续按上次可用规则工作，但配置和规则更新暂停，避免出现双真值。</div>
-  <div id="staleBanner" class="banner"><strong>刷新失败 · 显示上次成功数据</strong>页面不会因为一次 API/状态读取失败把已有状态清空。</div>
-  <div id="blockedBanner" class="banner bad"><strong>INTL 当前不可用 · 已安全阻断</strong>这是 strict fail-closed 的正常安全状态，不会被“自愈”误判成需要切到 PRIMARY。恢复 INTL 后仍保持原选择。</div>
-  <div id="tx" class="tx"><div><b>等待确认 · <span id="countdown">01:26</span></b><div class="meta">当前变更正在试运行。超时自动恢复上一版；reboot / activation 中断也必须回滚到一致状态。</div></div><div class="actions" style="margin:0"><button class="btn danger" id="rollbackBtn">立即撤销</button><button class="btn" id="confirmBtn">确认保留</button></div></div>
+<div class="tabs"><button class="tab on" data-t="home">首页</button><button class="tab" data-t="services">服务分流</button><button class="tab" data-t="adv">高级</button><button class="tab" data-t="adb">ADB 工具箱</button><button class="tab" data-t="proxy">备用代理</button><button class="tab" data-t="help">说明</button></div>
 
-  <div class="tabs">
-    <button class="tab on" data-tab="status">状态</button>
-    <button class="tab" data-tab="services">服务分流</button>
-    <button class="tab" data-tab="advanced">高级</button>
-    <button class="tab" data-tab="adb">ADB 工具箱</button>
-    <button class="tab" data-tab="proxy">备用代理</button>
-    <button class="tab" data-tab="help">说明</button>
-  </div>
+<section id="home" class="panel on">
+<h3>插件与核心开关</h3><div class="body"><table class="tbl form"><tr><th>双 WAN 智能分流</th><td><label><input type="checkbox" checked> 已启用</label></td></tr><tr><th>MOBILE / INTL 自动自愈</th><td><label><input type="checkbox" checked> 已启用</label></td></tr></table></div>
 
-  <section id="status" class="panel on">
-    <div class="grid">
-      <div class="card"><div class="k">P1</div><div class="v good">已启用</div><div class="s">产品层正常</div></div>
-      <div class="card"><div class="k">ShellCrash</div><div class="v good">running</div><div class="s">1.9.5beta3 · dedicated</div></div>
-      <div class="card"><div class="k">Mihomo</div><div class="v good">running</div><div class="s">final config validated</div></div>
-      <div class="card"><div class="k">当前模式</div><div class="v">按服务分流</div><div class="s">PRIMARY / INTL 不互相 fallback</div></div>
-      <div class="card"><div class="k">PRIMARY（家庭 WAN）</div><div id="primaryCard" class="v good">healthy</div><div class="s">逻辑出口 PRIMARY · 物理接口 wan0</div></div>
-      <div class="card"><div class="k">INTL（手机 USB）</div><div id="intlCard" class="v good">healthy</div><div id="intlSub" class="s">逻辑出口 INTL · 物理接口 usb0</div></div>
-      <div class="card"><div class="k">外置存储</div><div id="storageCard" class="v good">WANSTORE 正常</div><div class="s">authority · candidate/LKG/user data</div></div>
-      <div class="card"><div class="k">备用代理</div><div id="proxyCard" class="v good">online</div><div class="s">LAN :13128 · ToVPS tunnel</div></div>
-    </div>
+<h3>公网出口模式</h3><div class="body"><table class="tbl form"><tr><th>模式</th><td><div id="mode" class="seg"><button class="on">按服务分流</button><button>全部 PRIMARY</button><button>全部 INTL</button></div><div class="small">这里只是选择待保存值，不会立即生效。</div></td></tr></table><div class="actions right"><span id="modeDirty" class="small dirty">没有未保存修改</span><button id="saveMode" class="btn" disabled>保存并应用</button></div></div>
 
-    <div class="block">
-      <div class="block-title">MOBILE / INTL 自愈状态</div>
-      <div class="block-body">
-        <div id="healText" class="statusline"><b>已开启</b><br>健康：<span class="good">healthy</span> · 连续失败：0 · 状态：normal<br>冷却剩余：0 秒 · 最近：- · 结果：-</div>
-        <div class="actions">
-          <button class="btn" id="cellReset">受控恢复 MOBILE 蜂窝</button>
-          <button class="btn secondary adbRecover">发起 ADB / 恢复 USB 网络</button>
-          <button class="btn secondary" id="refreshBtn">刷新状态</button>
-        </div>
-        <div class="small" style="margin-top:8px">继承 0.9.0 修复：当 INTL 已处于正确的 fail-closed blackhole 状态时，不把它当成“坏状态”去 full-reconcile，更不会切到 PRIMARY。</div>
-      </div>
-    </div>
+<h3>实际公网出口</h3><div class="body"><div class="grid">
+<div class="card"><b>PRIMARY · 家庭 WAN</b><strong class="good">healthy</strong><div class="small">接口：wan0</div><div class="small">公网 IP：203.0.113.18</div><div class="small">地区：中国 · 成都</div><div class="small">运营商：示例 ISP · ASxxxx</div><div class="small">Cloudflare PoP：HKG</div><button class="btn sec egress" data-e="PRIMARY">重新检测出口</button></div>
+<div class="card"><b>INTL · 手机 USB</b><strong id="intlStatus" class="good">healthy</strong><div class="small">接口：usb0</div><div class="small">公网 IP：198.51.100.27</div><div class="small">地区：日本 · 东京</div><div class="small">运营商：示例 ISP · ASyyyy</div><div class="small">Cloudflare PoP：NRT</div><button class="btn sec egress" data-e="INTL">重新检测出口</button></div>
+</div><div class="small" style="margin-top:7px">最终实现分别强制绑定 PRIMARY / INTL 去访问公网查询接口；WAN 变化时检测一次，也可手动检测，平时读缓存。</div></div>
 
-    <div class="block">
-      <div class="block-title">公网出口模式</div>
-      <div class="block-body">
-        <div class="row"><div class="label">策略</div><div class="value"><div id="policySeg" class="seg"><button class="on">按服务分流</button><button>全部 PRIMARY</button><button>全部 INTL</button></div></div></div>
-        <div class="small" style="margin-top:8px">修改 live runtime 会进入统一 90 秒安全事务。指定出口不可用时直接失败，不自动切另一条 WAN。</div>
-      </div>
-    </div>
+<h3>MOBILE / INTL 自愈状态</h3><div class="body"><div id="heal">已开启<br>健康：<span class="good">healthy</span> · 连续失败：0 · 状态：normal<br>冷却剩余：0 秒 · 最近：- · 结果：-</div><div class="actions"><button class="btn">受控恢复 MOBILE 蜂窝</button><button class="btn sec adbRecover">发起 ADB / 恢复 USB 网络</button><button class="btn sec">刷新状态</button></div></div>
 
-    <div class="block">
-      <div class="block-title">存储与持久化</div>
-      <div class="block-body">
-        <div class="kv">
-          <div>产品统一路径</div><div class="path">/koolshare/dwsplit</div>
-          <div>正常 authority</div><div class="path">/tmp/mnt/WANSTORE/koolshare/dwsplit</div>
-          <div>JFFS 应急副本</div><div class="path">/jffs/dwsplit-emergency（只读式 LKG）</div>
-          <div>ADB runtime</div><div class="path">/jffs/dwsplit/adb → /tmp/opt → /opt/bin/adb</div>
-          <div>ADB 大文件</div><div class="path">/tmp/mnt/WANSTORE/dwsplit-data</div>
-        </div>
-      </div>
-    </div>
-  </section>
+<h3>运行组件</h3><div class="body small">ShellCrash：<span class="good">正常</span> · Mihomo：<span class="good">正常</span> · 外置存储：<span id="storageText" class="good">WANSTORE 正常</span></div>
+</section>
 
-  <section id="services" class="panel">
-    <div class="notice"><b>服务分流是日常入口。</b> 父服务直接选择 PRIMARY / INTL；子服务可以 FOLLOW 父级，也可以单独覆盖。底层规则数据由 P1 管 candidate/LKG，Mihomo 只负责按最终顺序匹配。</div>
+<section id="services" class="panel">
+<h3>服务规则更新</h3><div class="body"><b>来源：</b>BlackMatrix7 / ios_rule_script（GitHub）<div class="small">通过 PRIMARY 下载。只检查当前配置真正需要的规则：例如设为 INTL 的服务，以及与父级不同的子服务 override。检查只形成候选，不影响 live。</div><div class="actions"><button id="checkRules" class="btn sec write">检查服务规则更新</button><button id="applyRules" class="btn write" style="display:none">应用更新</button></div><div id="checkResult" class="small">上次检查：今天 16:42 · 上次实际更新：今天 08:31</div></div>
 
-    <div class="block">
-      <div class="block-title">服务数据 <span class="tag good" id="serviceDataTag">已是最新</span></div>
-      <div class="block-body">
-        <div class="twocol">
-          <div class="statusline">当前 LKG：<b>2026-09-24</b><br>来源：BlackMatrix / P1 Service Catalog<br>上次检查：今天 16:42<br>上次实际更新：今天 08:31</div>
-          <div><div class="actions" style="justify-content:flex-end"><button class="btn secondary storageWrite" id="checkData">检查更新</button><button class="btn storageWrite" id="applyData" style="display:none">应用候选</button></div><div class="small" style="text-align:right;margin-top:6px">“Provider”只作为底层实现细节，不再占一级 Tab。</div></div>
-        </div>
-        <details><summary>工程详情</summary><div class="code">candidate_binding = Profile + Service Catalog + source
-validation = real mihomo -t + P1 invariants
-promotion = candidate → LKG
-rollback = one-level LKG
-download egress = PRIMARY only</div></details>
-      </div>
-    </div>
+<h3>常用服务</h3><div class="body"><table class="tbl"><thead><tr><th>服务</th><th>出口</th><th>状态</th></tr></thead><tbody>
+<tr><td><b>Apple</b></td><td><div class="seg svc"><button class="on">PRIMARY</button><button>INTL</button></div></td><td class="good">ready</td></tr>
+<tr><td>↳ Apple Intelligence</td><td><div class="seg svc"><button>跟随</button><button>PRIMARY</button><button class="on">INTL</button></div></td><td class="good">ready</td></tr>
+<tr><td><b>Google</b></td><td><div class="seg svc"><button>PRIMARY</button><button class="on">INTL</button></div></td><td class="good">ready</td></tr>
+<tr><td><b>OpenAI</b></td><td><div class="seg svc"><button>PRIMARY</button><button class="on">INTL</button></div></td><td class="good">ready</td></tr>
+<tr><td><b>GitHub</b></td><td><div class="seg svc"><button>PRIMARY</button><button class="on">INTL</button></div></td><td class="good">ready</td></tr>
+</tbody></table><div class="actions right"><span id="svcDirty" class="small dirty">没有未保存修改</span><button id="saveSvc" class="btn" disabled>保存并应用</button></div></div>
 
-    <div class="tablewrap">
-      <table>
-        <thead><tr><th>服务</th><th>出口</th><th>状态</th></tr></thead>
-        <tbody>
-          <tr class="parent"><td>Apple <span class="small">· 大类默认</span></td><td><select class="svc"><option selected>PRIMARY（家庭 WAN）</option><option>INTL（手机 USB）</option></select></td><td class="good">PRIMARY · ready</td></tr>
-          <tr class="child"><td>↳ Apple Intelligence</td><td><select class="svc"><option>FOLLOW Apple</option><option>PRIMARY（家庭 WAN）</option><option selected>INTL（手机 USB）</option></select></td><td class="good">INTL · ready</td></tr>
-          <tr class="child"><td>↳ iCloud</td><td><select class="svc"><option selected>FOLLOW Apple</option><option>PRIMARY（家庭 WAN）</option><option>INTL（手机 USB）</option></select></td><td class="good">PRIMARY · ready</td></tr>
-          <tr class="parent"><td>Google <span class="small">· 大类默认</span></td><td><select class="svc"><option>PRIMARY（家庭 WAN）</option><option selected>INTL（手机 USB）</option></select></td><td class="good">INTL · ready</td></tr>
-          <tr><td><b>OpenAI</b></td><td><select class="svc"><option>PRIMARY（家庭 WAN）</option><option selected>INTL（手机 USB）</option></select></td><td class="good">INTL · ready</td></tr>
-          <tr><td><b>GitHub</b></td><td><select class="svc"><option>PRIMARY（家庭 WAN）</option><option selected>INTL（手机 USB）</option></select></td><td class="good">INTL · ready</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="savebar"><span id="dirty" class="small">没有未保存修改</span><div class="actions" style="margin:0"><button class="btn secondary" id="discardSvc" disabled>放弃修改</button><button class="btn" id="saveSvc" disabled>保存并应用</button></div></div>
-  </section>
+<h3>自定义分流规则</h3><div class="body"><div class="small">给内置服务列表覆盖不到的域名、域名后缀或 IP/CIDR 指定出口。它本质上仍是“什么流量走哪条出口”，所以放在服务分流，不再放高级。</div><table class="tbl form" style="margin-top:8px"><tr><th>类型</th><td><select id="cType"><option>域名</option><option>域名后缀</option><option>IP / CIDR</option></select></td></tr><tr><th>内容</th><td><input id="cValue" style="width:100%" placeholder="api.example.com / example.com / 203.0.113.0/24"></td></tr><tr><th>出口</th><td><select id="cTarget"><option>PRIMARY</option><option>INTL</option></select> <button id="addCustom" class="btn sec">加入列表</button></td></tr></table><table class="tbl" style="margin-top:8px"><thead><tr><th>规则</th><th>出口</th><th>操作</th></tr></thead><tbody id="customRows"><tr><td>DOMAIN-SUFFIX · example.net</td><td>INTL</td><td><button class="btn danger">删除</button></td></tr></tbody></table><div class="actions right"><span id="cDirty" class="small dirty">没有未保存修改</span><button id="saveCustom" class="btn" disabled>保存并应用</button></div></div>
+</section>
 
-  <section id="advanced" class="panel">
-    <div class="notice"><b>普通使用无需进入这里。</b>这里用于特殊规则、设备固定出口、旧配置兼容和排障。高级人工 override 优先于服务分流。</div>
-    <div class="adv-tabs">
-      <button class="advtab on" data-adv="rule">规则测试</button>
-      <button class="advtab" data-adv="custom">我的自定义规则</button>
-      <button class="advtab" data-adv="device">按设备固定出口</button>
-      <button class="advtab" data-adv="yaml">YAML 高级规则</button>
-      <button class="advtab" data-adv="china">中国基础规则库</button>
-      <button class="advtab" data-adv="diag">检测与日志</button>
-    </div>
-
-    <div id="adv-rule" class="advpanel on">
-      <div class="block"><div class="block-title">规则预测与双出口实测</div><div class="block-body">
-        <div class="row"><div class="label">链接 / 域名 / IPv4</div><div class="value"><input class="text" value="https://mail.google.com/"><div class="actions"><button class="btn">判断出口并测试</button></div></div></div>
-        <div class="row"><div class="label">结果</div><div class="value"><div class="code">预计实际出口：INTL
+<section id="adv" class="panel"><div class="note small">高级只保留真正需要高级入口的能力。</div><div class="subs"><button class="sub on" data-sb="test">规则测试</button><button class="sub" data-sb="device">按设备固定出口</button><button class="sub" data-sb="yaml">YAML 高级规则</button></div>
+<div id="sb-test" class="subpanel on"><h3>规则测试</h3><div class="body"><table class="tbl form"><tr><th>链接 / 域名 / IP</th><td><input style="width:100%" value="https://mail.google.com/"><button class="btn">判断出口并测试</button></td></tr><tr><th>结果</th><td><div class="code">预计出口：INTL
 PRIMARY：可连接
 INTL：可连接
-高级人工 override：无</div></div></div>
-      </div></div>
-    </div>
+自定义 override：无</div></td></tr></table></div></div>
+<div id="sb-device" class="subpanel"><h3>添加或切换设备出口</h3><div class="body"><div class="small">按 LAN IPv4 固定整台设备公网出口。目标出口不可用时 fail-closed，不切另一条 WAN。</div><table class="tbl form" style="margin-top:8px"><tr><th>设备 LAN IPv4</th><td><input style="width:100%" placeholder="192.168.50.20"></td></tr><tr><th>固定出口</th><td><select><option>PRIMARY</option><option>INTL</option></select> <button class="btn write">保存并应用</button></td></tr></table><table class="tbl" style="margin-top:8px"><thead><tr><th>设备 IPv4</th><th>出口</th><th>状态</th><th>操作</th></tr></thead><tbody><tr><td>192.168.50.61</td><td>PRIMARY</td><td>启用</td><td><button class="btn danger">删除</button></td></tr><tr><td>192.168.50.202</td><td>PRIMARY</td><td>启用</td><td><button class="btn danger">删除</button></td></tr><tr><td>192.168.50.237</td><td>PRIMARY</td><td>启用</td><td><button class="btn danger">删除</button></td></tr></tbody></table></div></div>
+<div id="sb-yaml" class="subpanel"><h3>YAML 高级规则</h3><div class="body"><textarea style="width:100%;height:200px"># 仅供真正需要底层高级语义时使用
+# 普通域名/IP例外请到“服务分流 → 自定义分流规则”</textarea><div class="actions"><button class="btn sec">检查 YAML（不保存）</button><button class="btn danger">恢复上次成功配置</button><button class="btn write">保存并应用</button></div></div></div>
+</section>
 
-    <div id="adv-custom" class="advpanel">
-      <div class="tablewrap"><table><thead><tr><th>状态</th><th>域名 / IP</th><th>出口</th><th>备注</th><th>操作</th></tr></thead><tbody><tr><td>启用</td><td>example.com</td><td>PRIMARY</td><td>示例</td><td><button class="btn secondary">停用</button> <button class="btn danger">删除</button></td></tr></tbody></table></div>
-    </div>
+<section id="adb" class="panel"><h3>ADB 工具箱</h3><div class="body"><div class="grid"><div class="card"><b>ADB 状态</b><strong class="good">已连接并授权</strong><div class="small">vivo X200 Ultra · rndis,adb</div></div><div class="card"><b>外置存储</b><strong class="good">已就绪</strong><div class="small mono">/tmp/mnt/WANSTORE/dwsplit-data</div></div></div><div class="actions"><button class="btn adbRecover">发起 ADB / 恢复 USB 网络</button><button class="btn sec">刷新设备</button></div></div><h3>APK 与故障取证</h3><div class="body"><div class="actions"><button class="btn">临时上传并安装 APK</button><button class="btn sec write">保存 APK 到外置盘</button><button class="btn sec write">导出第三方 App 清单</button><button class="btn write">采集 USB 共享故障诊断</button></div></div></section>
 
-    <div id="adv-device" class="advpanel">
-      <div class="notice">按设备的 LAN IPv4 固定公网出口。建议先给设备做 DHCP 保留；INTL 不可用时保持 fail-closed，不回落 PRIMARY。这里只更新该设备的独立 source policy，不重建整套规则。</div>
-      <div class="block">
-        <div class="block-title">添加或切换设备出口</div>
-        <div class="block-body">
-          <div class="row"><div class="label">设备 LAN IPv4</div><div class="value"><input id="devIp" class="text" placeholder="例如 192.168.50.20"></div></div>
-          <div class="row"><div class="label">固定出口</div><div class="value"><select id="devTarget"><option>PRIMARY（家庭 WAN）</option><option>INTL（手机 USB）</option></select> <button id="saveDevice" class="btn storageWrite">保存并应用</button></div></div>
-        </div>
-      </div>
-      <div class="tablewrap"><table><thead><tr><th>设备 IPv4</th><th>固定出口</th><th>状态</th><th>操作</th></tr></thead><tbody id="deviceRows">
-        <tr><td>192.168.50.61</td><td class="good">PRIMARY（家庭 WAN）</td><td>启用</td><td><button class="btn danger">删除</button></td></tr>
-        <tr><td>192.168.50.202</td><td class="good">PRIMARY（家庭 WAN）</td><td>启用</td><td><button class="btn danger">删除</button></td></tr>
-        <tr><td>192.168.50.237</td><td class="good">PRIMARY（家庭 WAN）</td><td>启用</td><td><button class="btn danger">删除</button></td></tr>
-      </tbody></table></div>
-      <div class="small" style="margin-top:8px">继承 0.8.1/0.9.0 已验证语义：LAN / router / Tailscale bypass 在设备策略之前；指定出口不可用时阻断，不跨 WAN；设备 mutation 不 full-apply 主 YAML、不清全局 conntrack。</div>
-    </div>
+<section id="proxy" class="panel"><div class="note small">长期提供 LAN-only 备用代理。客户端只有显式配置该代理才走 ToVPS；不透明接管、不修改默认路由。</div><h3>备用代理</h3><div class="body"><table class="tbl form"><tr><th>代理地址</th><td class="mono">http://192.168.50.1:13128</td></tr><tr><th>代理状态</th><td><span id="proxyState" class="good">online</span></td></tr><tr><th>ToVPS Tunnel</th><td><span id="tunnelState" class="good">connected</span></td></tr><tr><th>底层出口</th><td><div id="proxySeg" class="seg"><button class="on">PRIMARY</button><button>INTL</button></div><div class="small">选择不会立即生效。</div></td></tr><tr><th>实际物理接口</th><td id="proxyIf">wan0</td></tr><tr><th>实际公网出口</th><td id="proxyExit">203.0.113.18 · 中国/成都 · ASxxxx</td></tr></table><div class="actions right"><span id="proxyDirty" class="small dirty">没有未保存修改</span><button id="saveProxy" class="btn" disabled>保存并应用</button><button id="testProxy" class="btn sec">测试代理</button></div><div id="proxyResult" class="code" style="margin-top:8px">尚未测试</div></div></section>
 
-    <div id="adv-yaml" class="advpanel">
-      <textarea style="width:100%;height:260px"># 高级兼容入口（示例）
-mode: rule
-strict: true
-# 最终 runtime 仍由 ShellCrash modifier + Mihomo validation 校验</textarea>
-      <div class="actions"><button class="btn secondary">整理格式</button><button class="btn secondary">检查 YAML（不保存）</button><button class="btn danger">恢复上次成功配置</button><button class="btn storageWrite">保存并应用</button></div>
-    </div>
-
-    <div id="adv-china" class="advpanel">
-      <div class="block"><div class="block-title">中国基础规则库</div><div class="block-body"><div class="notice">用于国内 / 非国内的基础判断；具体服务数据与它分开管理，避免把两套数据概念混在一起。</div><div class="actions"><button class="btn secondary storageWrite">检查基础规则更新</button><button class="btn storageWrite">下载并应用</button></div></div></div>
-    </div>
-
-    <div id="adv-diag" class="advpanel">
-      <div class="actions"><button class="btn">运行检查</button><button class="btn secondary">查看运行日志</button></div>
-      <div class="code" style="margin-top:10px">ShellCrash lifecycle contract: PASS
-Mihomo final config: PASS
-PRIMARY direct/interface: PASS
-INTL direct/interface: PASS
-DNS PRIMARY binding: PASS
-transaction state: idle</div>
-    </div>
-  </section>
-
-  <section id="adb" class="panel">
-    <div class="notice">ADB 保留为手机 / USB 工具箱，不再承担“应该走哪个 WAN”的判断。MOBILE/INTL 网络状态由路由器自身接口事实判断。</div>
-    <div class="grid">
-      <div class="card"><div class="k">ADB 状态</div><div class="v good">已连接并授权</div><div class="s">device</div></div>
-      <div class="card"><div class="k">手机</div><div class="v">vivo X200 Ultra</div><div class="s">Android · serial masked</div></div>
-      <div class="card"><div class="k">电池</div><div class="v">73%</div><div class="s">32.4°C · USB powered</div></div>
-      <div class="card"><div class="k">USB 功能</div><div class="v blue">rndis,adb</div><div class="s">USB 网络已暴露</div></div>
-      <div class="card"><div class="k">外置存储</div><div class="v good">已就绪</div><div class="s">WANSTORE</div></div>
-      <div class="card"><div class="k">数据目录</div><div class="v path">dwsplit-data</div><div class="s">APK / diagnostics / exports</div></div>
-      <div class="card"><div class="k">路由器内存</div><div class="v">142 MB</div><div class="s">可用</div></div>
-      <div class="card"><div class="k">临时安装上限</div><div class="v">100 MB</div><div class="s">动态安全上限</div></div>
-    </div>
-
-    <div class="twocol">
-      <div class="block"><div class="block-title">USB / ADB 快速操作</div><div class="block-body"><div class="actions"><button class="btn adbRecover">发起 ADB / 恢复 USB 网络</button><button class="btn secondary">刷新设备</button></div><div class="small" style="margin-top:8px">状态页也保留同一个快捷入口，故障时无需先切进工具箱。</div></div></div>
-      <div class="block"><div class="block-title">外置存储</div><div class="block-body"><div class="row"><div class="label">挂载磁盘</div><div class="value"><select><option>WANSTORE</option><option>USB2</option></select> <button class="btn secondary storageWrite">初始化目录</button></div></div><div class="small" style="margin-top:8px">只创建 dwsplit-data，不格式化磁盘，不删除现有文件。</div></div></div>
-    </div>
-
-    <div class="block">
-      <div class="block-title">APK 管理</div><div class="block-body">
-        <div class="row"><div class="label">从电脑选择 APK</div><div class="value"><input type="text" value="MobileLMServer.apk" readonly> <button class="btn">临时上传并安装</button> <button class="btn secondary storageWrite">保存到外置盘</button></div></div>
-        <div class="row"><div class="label">外置盘 APK</div><div class="value"><select><option>MobileLMServer.apk · 46.2 MB</option><option>Termux.apk · 102.7 MB</option></select> <button class="btn">校验并安装</button></div></div>
-      </div>
-    </div>
-
-    <div class="block">
-      <div class="block-title">辅助与故障取证</div><div class="block-body"><div class="actions"><button class="btn secondary storageWrite">导出手机第三方 App 清单</button><button class="btn storageWrite">采集手机 USB 共享故障诊断</button></div><div class="small" style="margin-top:8px">诊断输出写外置盘，不把大文件写进 JFFS。</div></div>
-    </div>
-  </section>
-
-  <section id="proxy" class="panel">
-    <div class="notice"><b>备用代理是同一个 P1 插件里的独立能力。</b>LAN 设备只有显式指定下面的 proxy 地址时才走 ToVPS；它不透明接管客户端、不改默认路由，也不属于 Mihomo proxy node。</div>
-
-    <div class="grid">
-      <div class="card"><div class="k">LAN Proxy</div><div id="proxyStatus" class="v good">online</div><div class="s path">http://192.168.50.1:13128</div></div>
-      <div class="card"><div class="k">ToVPS</div><div class="v">固定公网 IP</div><div class="s">目标已配置 · UI 默认不暴露完整 IP</div></div>
-      <div class="card"><div class="k">SSH Tunnel</div><div id="tunnelStatus" class="v good">connected</div><div class="s">local-forward → 127.0.0.1:3128</div></div>
-      <div class="card"><div class="k">Fail-closed</div><div class="v good">armed</div><div class="s">选定 WAN 不可用时 tunnel offline</div></div>
-    </div>
-
-    <div class="block">
-      <div class="block-title">代理入口与底层出口</div>
-      <div class="block-body">
-        <div class="row"><div class="label">代理地址</div><div class="value"><span class="path">http://192.168.50.1:13128</span> <button class="btn secondary" id="copyProxy">复制</button></div></div>
-        <div class="row"><div class="label">底层出口</div><div class="value"><div id="proxyEgress" class="seg"><button class="on">PRIMARY</button><button>INTL</button></div> <button id="saveProxy" class="btn">保存并应用</button></div></div>
-        <div class="row"><div class="label">当前实际出口</div><div id="actualProxyEgress" class="value">PRIMARY（家庭 WAN）</div></div>
-        <div class="row"><div class="label">物理接口</div><div id="proxyIf" class="value">wan0</div></div>
-        <div class="row"><div class="label">路由合同</div><div class="value">router → ToVPS 固定 IP → 专用 policy route → 选定物理 WAN；禁止跨 WAN fallback。</div></div>
-      </div>
-    </div>
-
-    <div class="block">
-      <div class="block-title">状态与测试</div>
-      <div class="block-body">
-        <div class="actions"><button class="btn" id="testProxy">测试代理</button><button class="btn secondary" id="reconnectProxy">重连 Tunnel</button></div>
-        <div id="proxyTestResult" class="code" style="margin-top:10px">状态：未测试
-入口：LAN-only :13128
-透明代理：否
-系统全局代理：否
-Mihomo node：否
-Tailscale dependency：否</div>
-      </div>
-    </div>
-
-    <details class="block">
-      <summary>链路详情</summary>
-      <div class="block-body"><div class="code">LAN device
-  → router LAN proxy :13128
-  → router-owned SSH local-forward
-  → ToVPS fixed public IP :22
-  → ToVPS localhost-only CONNECT proxy :3128
-  → Internet
-
-约束：
-- SSH 目标固定为 ToVPS 公网 IP，不靠域名分流决定出口
-- router-originated tunnel traffic 必须绕过 P1/Mihomo 透明接管
-- PRIMARY / INTL 选择独立于 LAN 服务分流
-- 修改出口进入 90 秒事务</div></div>
-    </details>
-  </section>
-
-  <section id="help" class="panel">
-    <div class="helpgrid">
-      <div class="help"><h3>保留：0.9.0 fail-closed 修复</h3><p>INTL 已正确 blackhole 时视为“安全阻断”，不是故障。自动恢复不得把它误修成 PRIMARY，也不得做 full reconcile 破坏安全状态。</p></div>
-      <div class="help"><h3>保留：等待 Merlin 网络事实完整</h3><p>USB WAN 刚连接时，接口/IP/网关尚未完整发布就不抢跑修路由；事实齐全后再判断是否需要恢复。</p></div>
-      <div class="help"><h3>保留：WebUI last-good</h3><p>一次状态请求失败不清空页面。已有数据继续显示并标记 stale；慢请求不能覆盖更新的数据。</p></div>
-      <div class="help"><h3>保留：stale lock / request-scoped mutation</h3><p>异常退出留下的锁必须可恢复；多页面同时操作不能靠全局 DBus 临时值互相覆盖。新实现继续采用服务端串行与请求级参数。</p></div>
-      <div class="help"><h3>不继承：旧 Go runtime owner</h3><p>Go controller / legacy owner 切换、旧 shell WAN reconciler 等只服务旧架构。#31 已决定运行层迁到 ShellCrash + Mihomo，因此不把这些实现重新搬回来。</p></div>
-      <div class="help"><h3>不继承：旧 community/ipset 实现细节</h3><p>AC88U 的 cksum fallback 属于旧 community runtime 的兼容修复。新架构只保留“设备兼容必须有 fallback/test”的原则，不保留旧数据面代码。</p></div>
-    </div>
-
-    <div class="block">
-      <div class="block-title">新架构职责</div><div class="block-body">
-        <div class="row"><div class="label">P1</div><div class="value">PRIMARY / INTL、服务目录/Profile、candidate/LKG、90 秒事务、状态/WebUI、设备固定出口、ADB 工具箱、备用代理产品层。</div></div>
-        <div class="row"><div class="label">ShellCrash</div><div class="value">ASUS/Merlin 生命周期、防火墙、透明接管、DNS/Fake-IP、Mihomo runtime。</div></div>
-        <div class="row"><div class="label">Mihomo</div><div class="value">原生 DOMAIN / DOMAIN-SUFFIX / RULE-SET 语义，以及 PRIMARY / INTL 两个 direct outbound。</div></div>
-      </div>
-    </div>
-  </section>
-</div>
-<div id="toast" class="toast"></div>
+<section id="help" class="panel"><h3>使用说明</h3><div class="body small">首页只放最重要的开关、模式和真实公网出口；服务分流负责服务/域名/IP走哪条出口；高级只保留规则测试、按设备固定出口和 YAML。</div><h3>服务规则从哪里更新</h3><div class="body small">当前 #31 从 GitHub 的 <b>blackmatrix7/ios_rule_script</b> 获取当前需要的规则，并强制通过 PRIMARY 下载。检查只形成 candidate；明确“应用更新”后才更新产品层 LKG，运行中进入 90 秒事务。</div><h3>实际公网出口怎么确认</h3><div class="body small">分别把请求绑定 PRIMARY / INTL，再访问公网查询接口。最终实现可组合 Cloudflare trace（公网 IP / PoP）与 IP metadata 服务（国家/城市/ASN/ISP）。WAN 变化时检测一次，也允许手动检测；不跟页面轮询持续访问公网。</div><h3>运行检查与日志</h3><div class="body"><div class="actions"><button class="btn">运行检查</button><button class="btn sec">查看运行日志</button></div><div class="code" style="margin-top:8px">ShellCrash lifecycle：PASS
+Mihomo final config：PASS
+PRIMARY direct：PASS
+INTL direct：PASS
+90 秒事务：idle</div></div></section>
+</div><div id="toast" class="toast"></div>
 <script>
-(function(){
-  const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-  let currentMode='normal', dirty=0, proxyChoice='PRIMARY';
-
-  function toast(msg){const e=$('#toast');e.textContent=msg;e.classList.add('on');clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.classList.remove('on'),1800)}
-  function setTab(name){$$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===name));$$('.panel').forEach(p=>p.classList.toggle('on',p.id===name))}
-  $$('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
-
-  $$('.advtab').forEach(b=>b.onclick=()=>{$$('.advtab').forEach(x=>x.classList.remove('on'));$$('.advpanel').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#adv-'+b.dataset.adv).classList.add('on')});
-
-  function setMode(mode){
-    currentMode=mode;$$('.pbtn').forEach(b=>b.classList.toggle('on',b.dataset.mode===mode));
-    $('#storageBanner').classList.toggle('on',mode==='storage');
-    $('#staleBanner').classList.toggle('on',mode==='stale');
-    $('#blockedBanner').classList.toggle('on',mode==='blocked');
-    $('#tx').classList.toggle('on',mode==='pending');
-    $$('.storageWrite').forEach(b=>b.disabled=mode==='storage');
-    if(mode==='blocked'){
-      $('#intlCard').textContent='blocked';$('#intlCard').className='v warn';$('#intlSub').textContent='INTL 已断 · blackhole active';
-      $('#healText').innerHTML='<b>已开启</b><br>健康：<span class="warn">blocked / safe</span> · 连续失败：3 · 状态：fail-closed<br>冷却剩余：412 秒 · 最近：16:41 · 结果：保持安全阻断';
-      $('#proxyStatus').textContent=proxyChoice==='INTL'?'offline':'online';
-      $('#tunnelStatus').textContent=proxyChoice==='INTL'?'disconnected':'connected';
-    }else{
-      $('#intlCard').textContent='healthy';$('#intlCard').className='v good';$('#intlSub').textContent='逻辑出口 INTL · 物理接口 usb0';
-      $('#healText').innerHTML='<b>已开启</b><br>健康：<span class="good">healthy</span> · 连续失败：0 · 状态：normal<br>冷却剩余：0 秒 · 最近：- · 结果：-';
-      $('#proxyStatus').textContent='online';$('#tunnelStatus').textContent='connected';
-    }
-    $('#storageCard').textContent=mode==='storage'?'JFFS 应急副本':'WANSTORE 正常';
-    $('#storageCard').className='v '+(mode==='storage'?'warn':'good');
-    if(mode==='pending') $('#countdown').textContent='01:26';
-    toast('已切换原型状态：'+({normal:'正常',blocked:'INTL 安全阻断',storage:'外置存储回退',stale:'刷新失败',pending:'90 秒事务'}[mode]));
-  }
-  $$('.pbtn').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
-
-  $$('#policySeg button').forEach(b=>b.onclick=()=>{$$('#policySeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');toast('策略已选择：'+b.textContent+'（原型）')});
-
-  $$('.svc').forEach(s=>s.onchange=()=>{dirty++;$('#dirty').textContent=dirty+' 项修改尚未保存';$('#saveSvc').disabled=false;$('#discardSvc').disabled=false});
-  $('#discardSvc').onclick=()=>{dirty=0;$('#dirty').textContent='没有未保存修改';$('#saveSvc').disabled=true;$('#discardSvc').disabled=true;toast('已放弃未保存修改（原型）')};
-  $('#saveSvc').onclick=()=>{dirty=0;$('#dirty').textContent='没有未保存修改';$('#saveSvc').disabled=true;$('#discardSvc').disabled=true;setMode('pending');toast('已保存，进入 90 秒安全事务（原型）')};
-
-  $('#checkData').onclick=()=>{$('#serviceDataTag').textContent='有新候选';$('#serviceDataTag').className='tag warn';$('#applyData').style.display='inline-block';toast('发现新候选，尚未改变 live runtime')};
-  $('#applyData').onclick=()=>{setMode('pending');toast('候选已进入试运行，等待确认')};
-
-  $('#rollbackBtn').onclick=()=>{setMode('normal');toast('已恢复上一版（原型）')};
-  $('#confirmBtn').onclick=()=>{setMode('normal');toast('已确认保留（原型）')};
-
-  $$('.adbRecover').forEach(b=>b.onclick=()=>toast('已发起 ADB / USB 网络恢复（原型）'));
-  $('#cellReset').onclick=()=>toast('已发起受控 MOBILE 蜂窝恢复（原型）');
-  $('#refreshBtn').onclick=()=>toast(currentMode==='stale'?'刷新仍失败，继续显示 last-good':'状态已刷新（原型）');
-
-  $('#saveDevice').onclick=()=>{
-    const ip=$('#devIp').value.trim(), target=$('#devTarget').value;
-    if(!/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)){toast('请输入有效的 LAN IPv4');return}
-    const tr=document.createElement('tr');tr.innerHTML='<td>'+ip+'</td><td class="'+(target.startsWith('PRIMARY')?'good':'blue')+'">'+target+'</td><td>启用</td><td><button class="btn danger">删除</button></td>';$('#deviceRows').appendChild(tr);$('#devIp').value='';toast('设备出口已保存（原型）');
-  };
-
-  $$('#proxyEgress button').forEach(b=>b.onclick=()=>{
-    $$('#proxyEgress button').forEach(x=>x.classList.remove('on'));b.classList.add('on');proxyChoice=b.textContent.trim();
-    toast('已选择 '+proxyChoice+'，尚未应用');
-  });
-  $('#saveProxy').onclick=()=>{
-    $('#actualProxyEgress').textContent=proxyChoice==='PRIMARY'?'PRIMARY（家庭 WAN）':'INTL（手机 USB）';
-    $('#proxyIf').textContent=proxyChoice==='PRIMARY'?'wan0':'usb0';
-    if(currentMode==='blocked'&&proxyChoice==='INTL'){$('#proxyStatus').textContent='offline';$('#tunnelStatus').textContent='disconnected'}
-    else{$('#proxyStatus').textContent='online';$('#tunnelStatus').textContent='connected'}
-    setMode('pending');toast('备用代理出口变更进入 90 秒事务');
-  };
-  $('#testProxy').onclick=()=>{
-    const ok=!(currentMode==='blocked'&&proxyChoice==='INTL');
-    $('#proxyTestResult').textContent=ok?'测试：PASS\nLAN proxy：online\nTunnel：connected\n实际出口：'+proxyChoice+'\n跨 WAN fallback：none':'测试：FAIL-CLOSED\nLAN proxy：offline\nTunnel：disconnected\n指定出口：INTL unavailable\n回退 PRIMARY：禁止';
-    toast(ok?'代理测试通过（原型）':'指定出口不可用，已 fail-closed');
-  };
-  $('#reconnectProxy').onclick=()=>toast('已请求重连 tunnel（原型）');
-  $('#copyProxy').onclick=()=>toast('已复制代理地址（原型）');
-
-  $$('button').forEach(b=>{
-    if(!b.onclick&&!b.classList.contains('tab')&&!b.classList.contains('advtab')&&!b.classList.contains('pbtn')) b.onclick=()=>toast('原型操作：'+b.textContent.trim());
-  });
-})();
-</script>
-</body>
-</html>
+(function(){const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));let state='normal',proxy='PRIMARY';
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove('on'),1500)}
+function pending(){$('#bPending').classList.add('on');state='pending';toast('已进入 90 秒确认窗口')}
+$$('.tab').forEach(b=>b.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('on'));$$('.panel').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.t).classList.add('on')});
+$$('.sub').forEach(b=>b.onclick=()=>{$$('.sub').forEach(x=>x.classList.remove('on'));$$('.subpanel').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#sb-'+b.dataset.sb).classList.add('on')});
+$$('.st').forEach(b=>b.onclick=()=>{state=b.dataset.s;$('#bStorage').classList.toggle('on',state==='storage');$('#bStale').classList.toggle('on',state==='stale');$('#bBlocked').classList.toggle('on',state==='blocked');$('#bPending').classList.toggle('on',state==='pending');$$('.write').forEach(x=>x.disabled=state==='storage');$('#storageText').textContent=state==='storage'?'JFFS 应急副本':'WANSTORE 正常';$('#intlStatus').textContent=state==='blocked'?'blocked':'healthy';$('#intlStatus').className=state==='blocked'?'yellow':'good';$('#heal').innerHTML=state==='blocked'?'已开启<br>健康：<span class="yellow">blocked / safe</span> · 连续失败：3 · 状态：fail-closed<br>冷却剩余：412 秒 · 最近：16:41 · 结果：保持安全阻断':'已开启<br>健康：<span class="good">healthy</span> · 连续失败：0 · 状态：normal<br>冷却剩余：0 秒 · 最近：- · 结果：-';toast('原型状态：'+state)});
+$('#rollback').onclick=()=>{$('#bPending').classList.remove('on');state='normal';toast('已恢复上一版（原型）')};$('#confirm').onclick=()=>{$('#bPending').classList.remove('on');state='normal';toast('已确认保留（原型）')};
+$$('#mode button').forEach(b=>b.onclick=()=>{$$('#mode button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#modeDirty').textContent='模式已修改，尚未应用';$('#saveMode').disabled=false});
+$('#saveMode').onclick=()=>{if(!confirm('应用新的公网出口模式？应用后进入 90 秒确认窗口；超时自动恢复上一版。'))return;$('#modeDirty').textContent='没有未保存修改';$('#saveMode').disabled=true;pending()};
+$$('.svc button').forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#svcDirty').textContent='服务出口有未保存修改';$('#saveSvc').disabled=false});$('#saveSvc').onclick=()=>{if(!confirm('保存服务分流并应用？运行中将进入 90 秒确认窗口。'))return;$('#svcDirty').textContent='没有未保存修改';$('#saveSvc').disabled=true;pending()};
+$('#checkRules').onclick=()=>{$('#checkResult').innerHTML='检查完成：Google +16，GitHub +4，OpenAI +3；<b>仅形成候选，尚未应用。</b>';$('#applyRules').style.display='inline-block';toast('服务规则候选已生成')};$('#applyRules').onclick=()=>{if(confirm('应用已检查的服务规则候选？'))pending()};
+$('#addCustom').onclick=()=>{const v=$('#cValue').value.trim();if(!v)return toast('请填写规则内容');const tr=document.createElement('tr');tr.innerHTML='<td>'+$('#cType').value+' · '+v+'</td><td>'+$('#cTarget').value+'</td><td><button class="btn danger">删除</button></td>';$('#customRows').appendChild(tr);$('#cValue').value='';$('#cDirty').textContent='自定义规则有未保存修改';$('#saveCustom').disabled=false};$('#saveCustom').onclick=()=>{if(confirm('保存自定义分流规则并应用？')){ $('#cDirty').textContent='没有未保存修改';$('#saveCustom').disabled=true;pending()}};
+$$('.egress').forEach(b=>b.onclick=()=>toast('已通过 '+b.dataset.e+' 检测实际公网出口（原型）'));$$('.adbRecover').forEach(b=>b.onclick=()=>toast('已发起 ADB / 恢复 USB 网络（原型）'));
+$$('#proxySeg button').forEach(b=>b.onclick=()=>{$$('#proxySeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');proxy=b.textContent;$('#proxyDirty').textContent='备用代理出口已修改，尚未应用';$('#saveProxy').disabled=false});$('#saveProxy').onclick=()=>{if(!confirm('切换备用代理底层出口到 '+proxy+'？应用后进入 90 秒确认窗口。'))return;$('#proxyIf').textContent=proxy==='PRIMARY'?'wan0':'usb0';$('#proxyExit').textContent=proxy==='PRIMARY'?'203.0.113.18 · 中国/成都 · ASxxxx':'198.51.100.27 · 日本/东京 · ASyyyy';$('#proxyDirty').textContent='没有未保存修改';$('#saveProxy').disabled=true;pending()};$('#testProxy').onclick=()=>{const ok=!(state==='blocked'&&proxy==='INTL');$('#proxyResult').textContent=ok?'PASS\nTunnel：connected\n实际出口：'+proxy+'\n跨 WAN fallback：none':'FAIL-CLOSED\n指定出口 INTL 不可用\nTunnel：disconnected\n回退 PRIMARY：禁止';toast(ok?'代理测试通过':'已 fail-closed')};
+})();</script></body></html>
