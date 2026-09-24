@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P1 双 WAN 分流 · UI Prototype</title>
+<style>
+:root{
+  --bg:#0b1115;--panel:#111a20;--panel2:#152129;--panel3:#0f171c;
+  --line:#263843;--line2:#35505d;--text:#e8f0f3;--muted:#91a6b1;
+  --cyan:#2ec6d6;--cyan2:#1597a6;--green:#53d481;--yellow:#f4c95d;
+  --red:#ff6b6b;--blue:#5aa9ff;--shadow:0 18px 50px rgba(0,0,0,.28);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+button,input,select{font:inherit}
+body{min-height:100vh;background:
+radial-gradient(circle at 15% 0%,rgba(46,198,214,.12),transparent 28%),
+radial-gradient(circle at 90% 15%,rgba(90,169,255,.08),transparent 24%),
+var(--bg)}
+.shell{max-width:1180px;margin:0 auto;padding:24px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),#147d89);display:grid;place-items:center;font-weight:800;color:#061014;box-shadow:0 10px 28px rgba(46,198,214,.22)}
+.brand h1{font-size:20px;margin:0;font-weight:720}
+.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.proto{display:flex;align-items:center;gap:9px;border:1px solid var(--line);background:rgba(17,26,32,.86);padding:8px 11px;border-radius:10px;color:var(--muted);font-size:12px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 4px rgba(244,201,93,.10)}
+.hero{border:1px solid var(--line);background:rgba(17,26,32,.84);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.hero-head{padding:20px 22px 0}
+.hero-title{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.hero-title h2{margin:0;font-size:21px}
+.hero-title p{margin:6px 0 0;color:var(--muted);line-height:1.65;font-size:13px}
+.badges{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.badge{font-size:11px;padding:6px 8px;border-radius:999px;border:1px solid var(--line2);background:#0d161b;color:#b9cbd3;white-space:nowrap}
+.badge.good{color:#8de8aa;border-color:rgba(83,212,129,.32);background:rgba(83,212,129,.07)}
+.tx{display:none;margin:18px 22px 0;border:1px solid rgba(244,201,93,.46);background:rgba(244,201,93,.09);border-radius:12px;padding:12px 14px}
+.tx.on{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tx strong{color:#ffe39a}
+.tx p{margin:4px 0 0;font-size:12px;color:#d8c78f}
+.tx-actions{display:flex;gap:8px;flex-shrink:0}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-top:18px;padding:0 16px}
+.tab{border:0;background:transparent;color:var(--muted);padding:12px 15px;cursor:pointer;border-bottom:2px solid transparent}
+.tab:hover{color:#d8e7ec}.tab.on{color:white;border-bottom-color:var(--cyan);font-weight:650}
+.content{padding:20px 22px 24px}
+.panel{display:none}.panel.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.card{border:1px solid var(--line);background:var(--panel3);border-radius:var(--radius);padding:15px}
+.card-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card-value{margin-top:7px;font-size:17px;font-weight:690;word-break:break-word}
+.card-sub{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5}
+.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}.cyan{color:var(--cyan)}
+.section{margin-top:16px;border:1px solid var(--line);background:var(--panel3);border-radius:var(--radius);overflow:hidden}
+.section-head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.section-head h3{font-size:14px;margin:0}.section-head span{font-size:11px;color:var(--muted)}
+.section-body{padding:14px 15px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid rgba(38,56,67,.72)}
+.row:last-child{border-bottom:0}
+.row-main{min-width:0}.row-title{font-size:13px;font-weight:620}.row-sub{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+.path{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#cae0e8;word-break:break-all}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:9px;overflow:hidden;background:#0b1318}
+.seg button{border:0;border-right:1px solid var(--line2);background:transparent;color:#9fb3bc;padding:8px 11px;cursor:pointer;font-size:12px}
+.seg button:last-child{border-right:0}.seg button.on{background:var(--cyan2);color:white;font-weight:650}
+.btn{border:1px solid rgba(46,198,214,.45);background:var(--cyan2);color:white;border-radius:9px;padding:8px 11px;cursor:pointer;font-size:12px}
+.btn:hover{filter:brightness(1.08)}.btn.secondary{background:#22323b;border-color:#38515d}.btn.danger{background:#6d3035;border-color:#9a484f}.btn.ghost{background:transparent;border-color:var(--line2);color:#bed0d7}
+.toolbar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:12px;flex-wrap:wrap}
+.toolbar .left{margin-right:auto;color:var(--muted);font-size:11px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 10px;font-size:12px;vertical-align:middle}
+th{color:var(--muted);font-size:11px;font-weight:600;background:#0d151a}
+tr:last-child td{border-bottom:0}
+.service strong{display:block}.service small{display:block;color:var(--muted);margin-top:4px}
+.state{display:inline-flex;align-items:center;gap:6px;font-size:11px}
+.state:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.code{background:#091015;border:1px solid var(--line);border-radius:10px;padding:12px;font:11px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#c8dce4;white-space:pre-wrap}
+.note{font-size:12px;color:var(--muted);line-height:1.7}
+.storage-map{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:10px}
+.map-node{border:1px solid var(--line2);background:#0d171c;border-radius:10px;padding:11px}
+.map-node b{font-size:12px}.map-node span{display:block;margin-top:5px;color:var(--muted);font-size:10px}
+.arrow{color:#5a7785;font-size:18px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.device-header{display:flex;align-items:center;gap:12px}
+.phone{width:36px;height:56px;border:2px solid #54717e;border-radius:9px;position:relative;flex-shrink:0}
+.phone:after{content:"";position:absolute;width:10px;height:2px;border-radius:2px;background:#54717e;left:11px;top:4px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:9px 12px;font-size:12px}
+.kv div:nth-child(odd){color:var(--muted)}
+select,input[type="number"],input[type="text"]{background:#0d171c;border:1px solid var(--line2);color:white;border-radius:8px;padding:8px 9px;min-width:180px}
+.fake-upload{border:1px dashed #47616e;border-radius:10px;padding:18px;text-align:center;color:var(--muted);font-size:12px}
+.help-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.help-item{border:1px solid var(--line);background:#0f181d;border-radius:12px;padding:14px}
+.help-item h4{margin:0 0 7px;font-size:13px}.help-item p{margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+.toast{position:fixed;right:22px;bottom:22px;background:#142129;border:1px solid #36515e;color:#e7f4f8;border-radius:10px;padding:11px 13px;box-shadow:var(--shadow);font-size:12px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.18s}
+.toast.on{opacity:1;transform:translateY(0)}
+@media(max-width:860px){
+ .shell{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .cols2,.help-grid{grid-template-columns:1fr}.storage-map{grid-template-columns:1fr}.arrow{transform:rotate(90deg);text-align:center}
+ .hero-title{flex-direction:column}.badges{justify-content:flex-start}.tabs{overflow:auto}
+}
+@media(max-width:560px){
+ .grid{grid-template-columns:1fr}.topbar{align-items:flex-start}.proto{display:none}
+ .content{padding:15px}.hero-head{padding:16px 15px 0}.tabs{padding:0 8px}.tab{padding:11px 10px;white-space:nowrap}
+ .tx.on{align-items:flex-start;flex-direction:column}.row{align-items:flex-start;flex-direction:column}
+ .kv{grid-template-columns:1fr}.toolbar{justify-content:flex-start}.toolbar .left{width:100%;margin:0}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">P1</div>
+      <div>
+        <h1>双 WAN 分流</h1>
+        <p>ShellCrash + Mihomo · UI Prototype</p>
+      </div>
+    </div>
+    <div class="proto"><span class="dot"></span>仅 UI 原型 · 模拟数据 · 不连接路由器</div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-head">
+      <div class="hero-title">
+        <div>
+          <h2>P1 网络控制台</h2>
+          <p>日常只需要看出口、服务分流和异常状态；底层运行、外置存储和 ADB 工具箱保持可见但不过度打扰。</p>
+        </div>
+        <div class="badges">
+          <span class="badge good">ShellCrash 1.9.5beta3</span>
+          <span class="badge good">Mihomo 1.19.28</span>
+          <span class="badge">Candidate UI</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="tx" class="tx">
+      <div>
+        <strong>等待确认 · 01:26</strong>
+        <p>当前配置正在试运行。倒计时结束前未确认，将自动恢复上一版。</p>
+      </div>
+      <div class="tx-actions">
+        <button class="btn danger" data-action="rollback">立即撤销</button>
+        <button class="btn" data-action="confirm">确认保留</button>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-tab="status">状态</button>
+      <button class="tab" data-tab="services">服务分流</button>
+      <button class="tab" data-tab="provider">Provider</button>
+      <button class="tab" data-tab="adb">ADB 工具箱</button>
+      <button class="tab" data-tab="help">说明</button>
+    </div>
+
+    <div class="content">
+      <section id="status" class="panel on">
+        <div class="grid">
+          <div class="card"><div class="card-title">Runtime</div><div class="card-value good">运行中</div><div class="card-sub">ShellCrash / Mihomo 正常</div></div>
+          <div class="card"><div class="card-title">PRIMARY</div><div class="card-value">wan0</div><div class="card-sub">家庭宽带 · 192.168.1.2</div></div>
+          <div class="card"><div class="card-title">INTL</div><div class="card-value cyan">usb0</div><div class="card-sub">手机 USB · 已连接</div></div>
+          <div class="card"><div class="card-title">当前策略</div><div class="card-value">按服务分流</div><div class="card-sub">不允许 PRIMARY ↔ INTL 自动 fallback</div></div>
+          <div class="card"><div class="card-title">Provider</div><div class="card-value good">14 / 14</div><div class="card-sub">全部 ready · LKG 可用</div></div>
+          <div class="card"><div class="card-title">外置存储</div><div class="card-value good">WANSTORE</div><div class="card-sub">Authority online · 21.6 GB free</div></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>公网出口模式</h3><span>修改后进入 90 秒安全事务</span></div>
+          <div class="section-body">
+            <div class="row">
+              <div class="row-main"><div class="row-title">默认策略</div><div class="row-sub">正常情况下按 Service Profile 决定每个服务走 PRIMARY 或 INTL。</div></div>
+              <div id="policySeg" class="seg">
+                <button class="on">按服务分流</button><button>全部 PRIMARY</button><button>全部 INTL</button>
+              </div>
+            </div>
+            <div class="toolbar"><div class="left">fail-closed：INTL 断开时不会偷偷回退到 PRIMARY。</div><button class="btn ghost" id="demoTx">演示 90 秒确认</button><button class="btn">应用模式</button></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>存储与映射</h3><span>最终 UI 读取实际挂载结果，不硬编码</span></div>
+          <div class="section-body">
+            <div class="storage-map">
+              <div class="map-node"><b>/koolshare</b><span>产品统一访问路径</span></div>
+              <div class="arrow">→</div>
+              <div class="map-node"><b>/tmp/mnt/WANSTORE/koolshare</b><span>正常运行时外置盘 authority</span></div>
+              <div class="arrow">↘</div>
+              <div class="map-node"><b>/jffs/dwsplit-emergency</b><span>验证过的只读式应急 LKG</span></div>
+            </div>
+            <div style="height:10px"></div>
+            <div class="row">
+              <div class="row-main"><div class="row-title">ADB Runtime</div><div class="row-sub path">/jffs/dwsplit/adb → 临时 bind /tmp/opt → /opt/bin/adb</div></div>
+              <span class="state good">ready</span>
+            </div>
+            <div class="row">
+              <div class="row-main"><div class="row-title">ADB 大文件目录</div><div class="row-sub path">/tmp/mnt/WANSTORE/dwsplit-data</div></div>
+              <span class="state good">mounted</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="panel">
+        <div class="note">父级服务直接选择 PRIMARY / INTL；子服务可以“跟随”父级，也可以单独覆盖。没有下拉框，日常调整尽量一次点击完成。</div>
+        <div class="section">
+          <div class="section-head"><h3>Service Profile</h3><span>6 个示例服务 · 模拟数据</span></div>
+          <div class="section-body" style="padding:0">
+            <table>
+              <thead><tr><th>服务</th><th>出口</th><th>Provider</th><th>状态</th></tr></thead>
+              <tbody>
+                <tr><td class="service"><strong>Google</strong><small>parent</small></td><td><div class="seg service-seg"><button>PRIMARY</button><button class="on">INTL</button></div></td><td>google-domains</td><td><span class="state good">ready</span></td></tr>
+                <tr><td class="service"><strong>↳ YouTube</strong><small>父级：Google</small></td><td><div class="seg service-seg"><button class="on">跟随</button><button>PRIMARY</button><button>INTL</button></div></td><td>youtube</td><td><span class="state good">ready</span></td></tr>
+                <tr><td class="service"><strong>GitHub</strong><small>parent</small></td><td><div class="seg service-seg"><button>PRIMARY</button><button class="on">INTL</button></div></td><td>github</td><td><span class="state good">ready</span></td></tr>
+                <tr><td class="service"><strong>OpenAI</strong><small>parent</small></td><td><div class="seg service-seg"><button>PRIMARY</button><button class="on">INTL</button></div></td><td>openai</td><td><span class="state good">ready</span></td></tr>
+                <tr><td class="service"><strong>Apple</strong><small>parent</small></td><td><div class="seg service-seg"><button class="on">PRIMARY</button><button>INTL</button></div></td><td>apple-cn</td><td><span class="state good">ready</span></td></tr>
+                <tr><td class="service"><strong>Microsoft</strong><small>parent</small></td><td><div class="seg service-seg"><button class="on">PRIMARY</button><button>INTL</button></div></td><td>microsoft-cn</td><td><span class="state warn">可更新</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="toolbar"><div class="left" id="dirtyText">没有未保存修改</div><button class="btn secondary" id="discardSvc">放弃修改</button><button class="btn" id="saveSvc">保存并应用</button></div>
+      </section>
+
+      <section id="provider" class="panel">
+        <div class="grid">
+          <div class="card"><div class="card-title">当前 LKG</div><div class="card-value good">2026-09-24</div><div class="card-sub">14 providers · validated</div></div>
+          <div class="card"><div class="card-title">候选更新</div><div class="card-value warn">3 changed</div><div class="card-sub">尚未进入 live runtime</div></div>
+          <div class="card"><div class="card-title">下载出口</div><div class="card-value">PRIMARY</div><div class="card-sub">Provider 更新不借用 INTL</div></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>Provider 候选</h3><span>先检查，再应用；原始 diff 收进详情</span></div>
+          <div class="section-body" style="padding:0">
+            <table>
+              <thead><tr><th>Provider</th><th>当前</th><th>候选</th><th>结果</th></tr></thead>
+              <tbody>
+                <tr><td>google-domains</td><td>8,421</td><td>8,437</td><td><span class="state warn">+16</span></td></tr>
+                <tr><td>github</td><td>312</td><td>316</td><td><span class="state warn">+4</span></td></tr>
+                <tr><td>openai</td><td>124</td><td>127</td><td><span class="state warn">+3</span></td></tr>
+                <tr><td>apple-cn</td><td>1,946</td><td>1,946</td><td><span class="state good">unchanged</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="toolbar"><div class="left">应用候选后，如果 runtime 正在运行，同样进入 90 秒确认窗口。</div><button class="btn secondary" data-action="checkProvider">通过 PRIMARY 检查更新</button><button class="btn">应用候选</button><button class="btn danger">恢复上一版 LKG</button></div>
+        <details class="section" style="margin-top:14px">
+          <summary style="cursor:pointer;padding:13px 15px;color:#b9cbd3;font-size:12px">查看工程详情 / 原始 candidate diff</summary>
+          <div class="section-body"><div class="code">profile_sha=9f8b...2e1a
+catalog_sha=62d4...9b77
+source=https://...
+changed=google-domains,github,openai
+validation=PASS
+binding=profile+catalog+source-base</div></div>
+        </details>
+      </section>
+
+      <section id="adb" class="panel">
+        <div class="note">ADB 不再负责判断 P1 是否应该把流量切到手机；它保留为 <b>USB 恢复 / 手机工具箱 / APK 安装 / 诊断</b> 能力。ADB runtime 本身放 JFFS，大文件放外置盘。</div>
+
+        <div class="grid">
+          <div class="card"><div class="card-title">ADB 状态</div><div class="card-value good">已连接并授权</div><div class="card-sub">device · daemon idle</div></div>
+          <div class="card"><div class="card-title">手机</div><div class="card-value">vivo X200 Ultra</div><div class="card-sub">Android 16 · 8A2F…91C0</div></div>
+          <div class="card"><div class="card-title">USB 功能</div><div class="card-value cyan">rndis,adb</div><div class="card-sub">USB 网络已暴露</div></div>
+          <div class="card"><div class="card-title">电池</div><div class="card-value">73%</div><div class="card-sub">32.4 °C · USB powered</div></div>
+          <div class="card"><div class="card-title">外置存储</div><div class="card-value good">已就绪</div><div class="card-sub">/tmp/mnt/WANSTORE/dwsplit-data</div></div>
+          <div class="card"><div class="card-title">临时安装安全上限</div><div class="card-value">100 MB</div><div class="card-sub">根据 /tmp 与可用 RAM 计算</div></div>
+        </div>
+
+        <div class="cols2" style="margin-top:12px">
+          <div class="section" style="margin-top:0">
+            <div class="section-head"><h3>外置存储</h3><span>不格式化磁盘</span></div>
+            <div class="section-body">
+              <div class="row">
+                <div class="row-main"><div class="row-title">挂载磁盘</div><div class="row-sub">初始化只会创建 <span class="path">dwsplit-data</span>。</div></div>
+                <select><option>/tmp/mnt/WANSTORE</option><option>/tmp/mnt/USB2</option></select>
+              </div>
+              <div class="kv" style="margin-top:12px">
+                <div>数据目录</div><div class="path">/tmp/mnt/WANSTORE/dwsplit-data</div>
+                <div>可用空间</div><div>21.6 GB</div>
+                <div>ADB runtime</div><div class="path">/jffs/dwsplit/adb</div>
+              </div>
+              <div class="toolbar"><button class="btn secondary">初始化目录</button></div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:0">
+            <div class="section-head"><h3>USB / ADB 快速操作</h3><span>不改变 P1 分流策略</span></div>
+            <div class="section-body">
+              <div class="device-header">
+                <div class="phone"></div>
+                <div><div class="row-title">当前设备已授权</div><div class="row-sub">可恢复 RNDIS、执行诊断与 APK 安装。</div></div>
+              </div>
+              <div class="toolbar" style="justify-content:flex-start;margin-top:18px">
+                <button class="btn">发起 ADB / 恢复 USB 网络</button>
+                <button class="btn secondary">刷新设备</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>APK 管理</h3><span>外置盘持久保存 / 内存临时安装</span></div>
+          <div class="section-body">
+            <div class="cols2">
+              <div>
+                <div class="fake-upload">
+                  从电脑选择 APK<br><span style="font-size:10px">原型中不真正上传</span>
+                  <div style="margin-top:12px"><button class="btn">临时上传并安装</button> <button class="btn secondary">保存到外置盘</button></div>
+                </div>
+              </div>
+              <div>
+                <div class="row" style="padding-top:0">
+                  <div class="row-main"><div class="row-title">外置盘 APK</div><div class="row-sub">先读取文件并计算 SHA-256，再确认安装。</div></div>
+                  <select><option>MobileLMServer.apk · 46.2 MB</option><option>Termux.apk · 102.7 MB</option></select>
+                </div>
+                <div class="toolbar"><button class="btn secondary">刷新列表</button><button class="btn">校验并安装</button></div>
+              </div>
+            </div>
+            <div class="row" style="margin-top:10px">
+              <div class="row-main"><div class="row-title">内存安装上限</div><div class="row-sub">避免把路由器 /tmp / RAM 吃满。</div></div>
+              <div><input type="number" value="100" min="20" max="150" style="min-width:80px;width:80px"> MB <button class="btn secondary">保存</button></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h3>诊断与导出</h3><span>输出写入外置存储</span></div>
+          <div class="section-body">
+            <div class="toolbar" style="justify-content:flex-start;margin-top:0">
+              <button class="btn secondary">导出手机第三方 App 清单</button>
+              <button class="btn">采集手机 USB 共享故障诊断</button>
+            </div>
+            <div class="code" style="margin-top:12px">ADB ready
+device=vivo X200 Ultra
+usb_functions=rndis,adb
+storage=/tmp/mnt/WANSTORE/dwsplit-data
+last_job=none</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="help" class="panel">
+        <div class="help-grid">
+          <div class="help-item"><h4>PRIMARY / INTL 是硬边界</h4><p>两条出口不做自动互相回退。INTL 失败时，应该失败，而不是偷偷把本应走 INTL 的流量送到 PRIMARY。</p></div>
+          <div class="help-item"><h4>90 秒事务</h4><p>影响 live runtime 的变更会先试运行。用户确认才保留；超时、启动失败或最终配置校验失败都恢复上一版。</p></div>
+          <div class="help-item"><h4>外置盘是 Authority</h4><p>正常运行数据尽量落在外置存储。JFFS 保留必要启动组件、ADB runtime 与经过验证的应急只读 LKG。</p></div>
+          <div class="help-item"><h4>ADB 是工具箱，不是流量判官</h4><p>ADB 用来恢复 USB 网络、安装 APK、导出/诊断手机；WAN 是否可用应直接根据路由器网络接口状态判断。</p></div>
+          <div class="help-item"><h4>Provider 先 Candidate 后 LKG</h4><p>“检查更新”只产生候选，不立即改变 live runtime。应用候选才推进产品层 LKG，并进入同一套安全事务。</p></div>
+          <div class="help-item"><h4>最终实现保持 Merlin 可落地</h4><p>这个原型故意只用了普通 HTML / CSS / JavaScript。视觉可以现代一点，但不依赖 React 等重型框架，便于回落到 ASUS / Softcenter 页面。</p></div>
+        </div>
+        <div class="section">
+          <div class="section-head"><h3>原型范围</h3><span>确认 UI 后再进入正式开发</span></div>
+          <div class="section-body note">
+            这份页面只确认信息架构、层级、按钮位置和交互方向。不会修改 P1 runtime、ShellCrash、Mihomo、路由规则、ADB 或外置存储。
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast">已更新</div>
+<script>
+(function(){
+  const tabs=[...document.querySelectorAll('.tab')], panels=[...document.querySelectorAll('.panel')];
+  tabs.forEach(t=>t.addEventListener('click',()=>{
+    tabs.forEach(x=>x.classList.remove('on')); panels.forEach(x=>x.classList.remove('on'));
+    t.classList.add('on'); document.getElementById(t.dataset.tab).classList.add('on');
+  }));
+  document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{
+    if(e.target.tagName!=='BUTTON')return;
+    [...seg.querySelectorAll('button')].forEach(b=>b.classList.remove('on')); e.target.classList.add('on');
+    if(seg.classList.contains('service-seg')){
+      window.__dirty=(window.__dirty||0)+1;
+      document.getElementById('dirtyText').textContent=window.__dirty+' 项修改尚未保存';
+    }
+  }));
+  const tx=document.getElementById('tx');
+  document.getElementById('demoTx').addEventListener('click',()=>{tx.classList.add('on');toast('已进入 90 秒确认演示');});
+  document.querySelectorAll('[data-action="rollback"],[data-action="confirm"]').forEach(b=>b.addEventListener('click',()=>{tx.classList.remove('on');toast(b.dataset.action==='confirm'?'已确认保留（模拟）':'已立即撤销（模拟）');}));
+  document.getElementById('saveSvc').addEventListener('click',()=>{window.__dirty=0;document.getElementById('dirtyText').textContent='没有未保存修改';tx.classList.add('on');toast('已保存，进入安全事务（模拟）');});
+  document.getElementById('discardSvc').addEventListener('click',()=>{window.__dirty=0;document.getElementById('dirtyText').textContent='没有未保存修改';toast('已放弃未保存修改（模拟）');});
+  document.querySelectorAll('button').forEach(b=>{if(!b.dataset.action&&b.id!=='demoTx'&&b.id!=='saveSvc'&&b.id!=='discardSvc'&&!b.classList.contains('tab')&&!b.closest('.seg')) b.addEventListener('click',()=>toast('原型操作：'+b.textContent.trim()));});
+  function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');clearTimeout(window.__tt);window.__tt=setTimeout(()=>el.classList.remove('on'),1800);}
+})();
+</script>
+</body>
+</html>
